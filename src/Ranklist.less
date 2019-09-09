@@ -1,5 +1,193 @@
+.-text-left {
+  text-align: left;
+}
+
+.-text-center {
+  text-align: center;
+}
+
+.-text-right {
+  text-align: right;
+}
+
+.-ml-none {
+  margin-left: 0;
+}
+
+.-ml-xs {
+  margin-left: 2px;
+}
+
+.-ml-sm {
+  margin-left: 4px;
+}
+
+.-ml-md {
+  margin-left: 8px;
+}
+
+.-ml-lg {
+  margin-left: 16px;
+}
+
+.-ml-xl {
+  margin-left: 32px;
+}
+
+.-mr-none {
+  margin-right: 0;
+}
+
+.-mr-xs {
+  margin-right: 2px;
+}
+
+.-mr-sm {
+  margin-right: 4px;
+}
+
+.-mr-md {
+  margin-right: 8px;
+}
+
+.-mr-lg {
+  margin-right: 16px;
+}
+
+.-mr-xl {
+  margin-right: 32px;
+}
+
+.-mt-none {
+  margin-top: 0;
+}
+
+.-mt-xs {
+  margin-top: 2px;
+}
+
+.-mt-sm {
+  margin-top: 4px;
+}
+
+.-mt-md {
+  margin-top: 8px;
+}
+
+.-mt-lg {
+  margin-top: 16px;
+}
+
+.-mt-xl {
+  margin-top: 32px;
+}
+
+.-mb-none {
+  margin-bottom: 0;
+}
+
+.-mb-xs {
+  margin-bottom: 2px;
+}
+
+.-mb-sm {
+  margin-bottom: 4px;
+}
+
+.-mb-md {
+  margin-bottom: 8px;
+}
+
+.-mb-lg {
+  margin-bottom: 16px;
+}
+
+.-mb-xl {
+  margin-bottom: 32px;
+}
+
+.-full-width {
+  width: 100%;
+}
+
+.-full-height {
+  height: 100%;
+}
+
+.-display-block {
+  display: block;
+}
+
+.-display-inline-block {
+  display: inline-block;
+}
+
+.-display-none {
+  display: none !important;
+}
+
+@color-gold: #f8Bf29;
+@color-silver: #c0c0c0;
+@color-bronze: #d69872;
+@color-iron: #a94442;
+
 .ranklist {
-  table {
+  .accepted {
+    background: #99ff99;
+  }
+
+  .failed {
+    background: #ff9999;
+  }
+
+  .frozen {
+    background: #c8d6fa;
+  }
+
+  .fb {
+    background: #009900;
+    color: #fff;
+  }
+
+  .fb .attempted {
+    color: #f0f0f0;
+  }
+
+  .gold {
+    border-left: 8px solid @color-gold;
+  }
+
+  .silver {
+    border-left: 8px solid @color-silver;
+  }
+
+  .bronze {
+    border-left: 8px solid @color-bronze;
+  }
+
+  .iron {
+    border-left: 8px solid @color-iron;
+  }
+
+  .rows table {
     table-layout: fixed;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    thead>tr>th {
+      padding: 8px;
+      vertical-align: middle;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tbody>tr>td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: middle;
+    }
+  }
+
+  img {
+    max-width: 100%;
   }
 }
