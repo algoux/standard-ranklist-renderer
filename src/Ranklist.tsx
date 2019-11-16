@@ -5,7 +5,7 @@ import srkChecker from "./srk-checker/index.d.ti";
 import { createCheckers } from "ts-interface-checker";
 import _ from 'lodash';
 import moment from 'moment';
-import { numberToAlphabet } from './utils/format';
+import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
@@ -52,6 +52,40 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     } catch (e) {
       throw new Error('Ranklist Data Check ' + e.toString());
     }
+  }
+
+  formatTimeDuration(time: srk.TimeDuration, targetUnit: srk.TimeUnit = 'ms', fmt: (num: number) => number = num => num) {
+    let ms = -1;
+    switch (time[1]) {
+      case 'ms':
+        ms = time[0];
+        break;
+      case 's':
+        ms = time[0] * 1000;
+        break;
+      case 'min':
+        ms = time[0] * 1000 * 60;
+        break;
+      case 'h':
+        ms = time[0] * 1000 * 60 * 60;
+        break;
+      case 'd':
+        ms = time[0] * 1000 * 60 * 60 * 24;
+        break;
+    }
+    switch (targetUnit) {
+      case 'ms':
+        return ms;
+      case 's':
+        return fmt(ms / 1000);
+      case 'min':
+        return fmt(ms / 1000 / 60);
+      case 'h':
+        return fmt(ms / 1000 / 60 / 60);
+      case 'd':
+        return fmt(ms / 1000 / 60 / 60 / 24);
+    }
+    return -1;
   }
 
   resolveColor(color: srk.Color) {
@@ -113,7 +147,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const { textColor, backgroundColor } = this.resolveStyle(p.style || {});
     const innerComp = <>
       <span className="-display-block" style={{ color: textColor[theme] }}>{alias}</span>
-      {stat ? <span className="-display-block">{stat.accepted} / {stat.submitted}</span> : null}
+      {stat ? <span className="-display-block" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
     return <th key={p.title} style={{ backgroundColor: backgroundColor[theme] }}>{cellComp}</th>;
@@ -154,15 +188,15 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const commonClassName = '-text-center';
     switch (result) {
       case 'FB':
-        return <td className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? st.time[0] : '-'}</td>;
+        return <td className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case 'AC':
-        return <td className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? st.time[0] : '-'}</td>;
+        return <td className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case '?':
         return <td className={classnames(commonClassName, 'frozen')}>{st.tries}</td>;
       case 'RJ':
         return <td className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
       default:
-        return null;
+        return <td></td>;
     }
   }
 
@@ -173,13 +207,14 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     if (type !== 'standard') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
+    console.log('!contest', contest.frozenDuration);
     return <div className="ranklist">
       <div className="contest -text-center">
         {this.renderContestBanner()}
         <h2>{contest.title}</h2>
         <p>
-          {moment(contest.startAt).format('YYYY-MM-DD HH:mm:ss Z')} {contest.duration[0]}{contest.duration[1]}
-          {contest.frozenDuration ? <span> (Frozen {contest.frozenDuration[0]}{contest.frozenDuration[1]})</span> : null}
+          {moment(contest.startAt).format('YYYY-MM-DD HH:mm:ss')} - {moment(contest.startAt).add(this.formatTimeDuration(contest.duration), 'ms').format('YYYY-MM-DD HH:mm:ss Z')}
+          {contest.frozenDuration ? <span> (Frozen {secToTimeStr(this.formatTimeDuration(contest.frozenDuration, 's', Math.floor))})</span> : null}
         </p>
         {contest.link ? <p>{this.genExternalLink(contest.link, 'View Original Ranklist')}</p> : null}
       </div>
@@ -200,7 +235,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
               <td>{r.user.name}</td>
               <td className="-text-right">{r.score.value}</td>
-              <td className="-text-right">{r.score.time ? r.score.time[0] : '-'}</td>
+              <td className="-text-right">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
               {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
             </tr>)}
           </tbody>
