@@ -224,7 +224,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <thead>
             <tr>
               {series.map(s => <th key={s.title}>{s.title}</th>)}
-              <th>User</th>
+              <th className="-text-left">User</th>
               <th>Score</th>
               <th>Time</th>
               {problems.map((p, index) => this.renderSingleProblemHeader(p, index))}
@@ -233,7 +233,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <tbody>
             {rows.map(r => <tr key={r.user.id || r.user.name}>
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
-              <td>{r.user.name}</td>
+              <td className="-text-left">{r.user.name}</td>
               <td className="-text-right">{r.score.value}</td>
               <td className="-text-right">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
               {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
