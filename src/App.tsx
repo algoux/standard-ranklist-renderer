@@ -71,8 +71,6 @@ class App extends React.Component<any, State> {
           Error: {this.state.error.message}
         </pre>
       </div>
-    } else if (this.state.loading) {
-      return <div>Loading...</div>;
     } else if (data) {
       return <div>
         <Ranklist data={data} />
@@ -82,9 +80,10 @@ class App extends React.Component<any, State> {
           <a href={`data/${this.state.id}.json`} target="_blank">Open srk.json</a>
         </div>
       </div>;
-    } else {
+    } else if (!data && !this.state.loading) {
       return <div>No Ranklist Data</div>;
     }
+    return null;
   }
 }
 
