@@ -10,6 +10,7 @@ interface State {
   errorStack: string;
   id: string;
   data: any;
+  loading: boolean;
 }
 
 class App extends React.Component<any, State> {
@@ -20,6 +21,7 @@ class App extends React.Component<any, State> {
       errorStack: '',
       id: '',
       data: null,
+      loading: false,
     };
   }
 
@@ -39,6 +41,9 @@ class App extends React.Component<any, State> {
     const query = queryString.parse(window.location.search);
     if (query.id) {
       try {
+        this.setState({
+          loading: true,
+        });
         const id = query.id.toString();
         const data = await request(`data/${id}.json`, {
           method: 'GET',
@@ -47,9 +52,13 @@ class App extends React.Component<any, State> {
         this.setState({
           id,
           data,
+          loading: false,
         });
       } catch (e) {
         console.error(e);
+        this.setState({
+          loading: false,
+        });
       }
     }
   }
@@ -62,6 +71,8 @@ class App extends React.Component<any, State> {
           Error: {this.state.error.message}
         </pre>
       </div>
+    } else if (this.state.loading) {
+      return <div>Loading...</div>;
     } else if (data) {
       return <div>
         <Ranklist data={data} />
