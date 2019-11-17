@@ -40,7 +40,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     this.preCheckData(this.props.data);
   }
 
-  UNSAFE_componentWillReceiveProps(p: RanklistProps, np: RanklistProps): void {
+  UNSAFE_componentWillReceiveProps(np: RanklistProps): void {
+    const p = this.props;
     if (!_.isEqual(p.data, np.data)) {
       this.preCheckData(np.data);
     }
@@ -207,7 +208,6 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     if (type !== 'standard') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
-    console.log('!contest', contest.frozenDuration);
     return <div className="ranklist">
       <div className="contest -text-center">
         {this.renderContestBanner()}
