@@ -99,8 +99,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   }
 
   resolveThemeColor(themeColor: srk.ThemeColor): ThemeColor {
-    let light = this.resolveColor(themeColor[0]);
-    let dark = this.resolveColor(themeColor[1] || themeColor[0]);
+    let light = this.resolveColor(typeof themeColor === 'string' ? themeColor : themeColor.light);
+    let dark = this.resolveColor(typeof themeColor === 'string' ? themeColor : themeColor.dark);
     return {
       [EnumTheme.light]: light,
       [EnumTheme.dark]: dark,
@@ -109,8 +109,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   resolveStyle(style: srk.Style) {
     const { textColor, backgroundColor } = style;
-    const textThemeColor = this.resolveThemeColor(textColor || ['']);
-    const backgroundThemeColor = this.resolveThemeColor(backgroundColor || ['']);
+    const textThemeColor = this.resolveThemeColor(textColor || '');
+    const backgroundThemeColor = this.resolveThemeColor(backgroundColor || '');
     return {
       textColor: textThemeColor,
       backgroundColor: backgroundThemeColor,
@@ -128,10 +128,11 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
     let imgSrc = '';
     let link = '';
-    if (Array.isArray(banner)) {
-      [imgSrc, link] = banner;
-    } else {
+    if (typeof banner === 'string') {
       imgSrc = banner;
+    } else {
+      imgSrc = banner.image;
+      link = banner.link;
     }
     const imgComp = <img src={imgSrc} alt="Contest Banner" className="-full-width" />;
     if (link) {
@@ -205,7 +206,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const { data } = this.props;
     console.log('ranklist data', this.props.data);
     const { type, version, contest, problems, series, rows, sorter, _now } = data;
-    if (type !== 'standard') {
+    if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
     return <div className="ranklist">

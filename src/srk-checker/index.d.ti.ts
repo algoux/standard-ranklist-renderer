@@ -4,9 +4,9 @@
 import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
-export const Type = t.lit('standard');
+export const Type = t.lit('general');
 
-export const Version = t.lit('0.1.0');
+export const Version = t.lit('0.2.0');
 
 export const DatetimeISOString = t.name("string");
 
@@ -16,19 +16,32 @@ export const TimeDuration = t.tuple("number", "TimeUnit");
 
 export const Link = t.name("string");
 
+export const LinkWithTitle = t.iface([], {
+  "link": "Link",
+  "title": "string",
+});
+
 export const Base64 = t.name("string");
 
 export const Image = t.union("Link", "Base64");
 
-export const ImageWithLink = t.tuple("Image", "Link");
+export const ImageWithLink = t.iface([], {
+  "image": "Image",
+  "link": "Link",
+});
 
 export const ColorHEX = t.name("string");
 
-export const ColorRGBA = t.tuple("number", "number", "number", "number");
+export const ColorRGB = t.name("string");
 
-export const Color = t.union("ColorHEX", "ColorRGBA");
+export const ColorRGBA = t.name("string");
 
-export const ThemeColor = t.union(t.tuple("Color"), t.tuple("Color", "Color"));
+export const Color = t.union("ColorHEX", "ColorRGB", "ColorRGBA");
+
+export const ThemeColor = t.union("Color", t.iface([], {
+  "light": "Color",
+  "dark": "Color",
+}));
 
 export const Style = t.iface([], {
   "textColor": t.opt("ThemeColor"),
@@ -37,6 +50,7 @@ export const Style = t.iface([], {
 
 export const ExternalUser = t.iface([], {
   "name": "string",
+  "avatar": t.opt("Image"),
   "link": t.opt("string"),
 });
 
@@ -81,7 +95,8 @@ export const Contest = t.iface([], {
   "duration": "TimeDuration",
   "frozenDuration": t.opt("TimeDuration"),
   "banner": t.opt(t.union("Image", "ImageWithLink")),
-  "link": t.opt("string"),
+  "link": t.opt("Link"),
+  "refLinks": t.opt(t.array("LinkWithTitle")),
 });
 
 export const RankSeriesSegmentStylePreset = t.union(t.lit('gold'), t.lit('silver'), t.lit('bronze'), t.lit('iron'));
@@ -153,10 +168,12 @@ const exportedTypeSuite: t.ITypeSuite = {
   TimeUnit,
   TimeDuration,
   Link,
+  LinkWithTitle,
   Base64,
   Image,
   ImageWithLink,
   ColorHEX,
+  ColorRGB,
   ColorRGBA,
   Color,
   ThemeColor,

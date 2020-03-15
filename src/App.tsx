@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.less';
 import Ranklist from './Ranklist';
-// import demoJson from './demo.json';
+import demoJson from './demo.json';
 import request from './utils/request';
 import queryString from 'query-string';
+
+let isDev = process.env.NODE_ENV === 'development';
 
 interface State {
   error: Error | null;
@@ -26,8 +28,14 @@ class App extends React.Component<any, State> {
   }
 
   componentDidMount(): void {
-    this.requestData();
-    setInterval(() => this.requestData(), 30 * 1000);
+    if (!isDev) {
+      this.requestData();
+      setInterval(() => this.requestData(), 30 * 1000);
+    } else {
+      this.setState({
+        data: demoJson,
+      });
+    }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
@@ -76,8 +84,8 @@ class App extends React.Component<any, State> {
         <Ranklist data={data} />
         <div className="-text-center" style={{ marginTop: '60px', marginBottom: '15px' }}>
           Powered by Standard Ranklist<br />
-          Copyright © 2019 <a href="https://github.com/algoux" target="_blank">algoUX</a><br />
-          <a href={`data/${this.state.id}.json`} target="_blank">Open srk.json</a>
+          Copyright © 2019-2020 <a href="https://github.com/algoux" target="_blank">algoUX</a><br />
+          <a href={isDev ? '' : `data/${this.state.id}.json`} target="_blank">Open srk.json</a>
         </div>
       </div>;
     } else if (!data && !this.state.loading) {
