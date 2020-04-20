@@ -1,3 +1,3 @@
 [submodule "src/srk"]
 	path = src/srk
-	url = https://git.sdutacm.cn/ojsc/standard-ranklist.git
+	url = git@github.com:algoux/standard-ranklist.git
