@@ -6,7 +6,7 @@ import * as t from "ts-interface-checker";
 
 export const Type = t.lit('general');
 
-export const Version = t.lit('0.2.0');
+export const Version = t.lit('0.2.1');
 
 export const DatetimeISOString = t.name("string");
 
@@ -61,6 +61,7 @@ export const User = t.iface([], {
   "avatar": t.opt("Image"),
   "organization": t.opt("string"),
   "teamMembers": t.opt(t.array("ExternalUser")),
+  "marker": t.opt("string"),
 });
 
 export const ProblemStatistics = t.iface([], {
@@ -137,6 +138,14 @@ export const RanklistRow = t.iface([], {
   "statuses": t.array("RankProblemStatus"),
 });
 
+export const MarkerStylePreset = t.union(t.lit('red'), t.lit('orange'), t.lit('yellow'), t.lit('green'), t.lit('blue'), t.lit('purple'), t.lit('pink'));
+
+export const Marker = t.iface([], {
+  "id": "string",
+  "label": "string",
+  "style": t.union("Style", "MarkerStylePreset"),
+});
+
 export const SorterBase = t.iface([], {
 });
 
@@ -157,6 +166,7 @@ export const Ranklist = t.iface([], {
   "problems": t.array("Problem"),
   "series": t.array("RankSeries"),
   "rows": t.array("RanklistRow"),
+  "markers": t.opt(t.array("Marker")),
   "sorter": t.opt("Sorter"),
   "_now": t.opt("DatetimeISOString"),
 });
@@ -194,6 +204,8 @@ const exportedTypeSuite: t.ITypeSuite = {
   RankScore,
   RankProblemStatus,
   RanklistRow,
+  MarkerStylePreset,
+  Marker,
   SorterBase,
   SorterICPC,
   Sorter,
