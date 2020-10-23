@@ -1,12 +1,13 @@
 import React from 'react';
 import './Ranklist.less';
 import * as srk from './srk';
-import srkChecker from "./srk-checker/index.d.ti";
-import { createCheckers } from "ts-interface-checker";
+import srkChecker from './srk-checker/index.d.ti';
+import { createCheckers } from 'ts-interface-checker';
 import _ from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
+import TeamFilterModal from './components/TeamFilterModal';
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
@@ -218,6 +219,12 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           {contest.frozenDuration ? <span> (Frozen {secToTimeStr(this.formatTimeDuration(contest.frozenDuration, 's', Math.floor))})</span> : null}
         </p>
         {contest.link ? <p>{this.genExternalLink(contest.link, 'View Original Ranklist')}</p> : null}
+      </div>
+
+      <div>
+        <TeamFilterModal>
+          <button>show TeamFiltermodal</button>
+        </TeamFilterModal>
       </div>
 
       <div className="rows">
