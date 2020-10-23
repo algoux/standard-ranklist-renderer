@@ -169,22 +169,26 @@
     border-right: 8px solid @color-iron;
   }
 
-  .rows table {
-    table-layout: fixed;
-    border-spacing: 0;
-    border-collapse: collapse;
+  .rows {
+    display: inline;
 
-    thead>tr>th {
-      padding: 8px;
-      vertical-align: middle;
-      border-bottom: 1px solid #ddd;
-      min-width: 50px;
-    }
+    table {
+      table-layout: fixed;
+      border-spacing: 0;
+      border-collapse: collapse;
 
-    tbody>tr>td {
-      padding: 8px;
-      border-bottom: 1px solid #ddd;
-      vertical-align: middle;
+      thead>tr>th {
+        padding: 8px;
+        vertical-align: middle;
+        border-bottom: 1px solid #ddd;
+        min-width: 50px;
+      }
+
+      tbody>tr>td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+      }
     }
   }
 
@@ -200,4 +204,21 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+#progressbar {
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+#fill {
+  border-radius: 5px;
+  height: 100%;
+  transition: all 1s linear;
+  text-align: center;
+  background-color: #6caf00;
+  color: #ffffff;
 }

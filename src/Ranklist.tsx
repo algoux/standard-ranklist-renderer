@@ -7,6 +7,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
+import Progress from './progress'
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
@@ -26,6 +27,7 @@ export interface RanklistProps {
 
 interface State {
   theme: keyof typeof EnumTheme;
+  width: number;
 }
 
 export default class Ranklist extends React.Component<RanklistProps, State> {
@@ -33,11 +35,23 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     super(props);
     this.state = {
       theme: EnumTheme.light,
+      width: 0,
     };
   }
 
   componentDidMount(): void {
     this.preCheckData(this.props.data);
+    // let fill = document.getElementById("fill");
+    // var count = 0;
+    // var timer = setInterval(() => {
+    //   count++;
+    //   if (fill) {
+    //     fill.style.width = count + "%";
+    //   }
+    //   if (count === 100) {
+    //     clearInterval(timer)
+    //   }
+    // }, 1000);
   }
 
   UNSAFE_componentWillReceiveProps(np: RanklistProps): void {
@@ -92,7 +106,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   resolveColor(color: srk.Color) {
     if (Array.isArray(color)) {
       return `rgba(${color[0]},${color[1]},${color[2]},${color[3]})`;
-    } else if(color) {
+    } else if (color) {
       return color;
     }
     return undefined;
@@ -217,9 +231,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           {moment(contest.startAt).format('YYYY-MM-DD HH:mm:ss')} - {moment(contest.startAt).add(this.formatTimeDuration(contest.duration), 'ms').format('YYYY-MM-DD HH:mm:ss Z')}
           {contest.frozenDuration ? <span> (Frozen {secToTimeStr(this.formatTimeDuration(contest.frozenDuration, 's', Math.floor))})</span> : null}
         </p>
-        {contest.link ? <p>{this.genExternalLink(contest.link, 'View Original Ranklist')}</p> : null}
+        <Progress _now={_now} contest={contest} formatTimeDuration={this.formatTimeDuration}></Progress>
       </div>
-
       <div className="rows">
         <table>
           <thead>
