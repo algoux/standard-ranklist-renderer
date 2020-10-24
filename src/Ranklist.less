@@ -131,6 +131,14 @@
 @color-bronze: #d69872;
 @color-iron: #a94442;
 
+@color-marker-red: #ff0000;
+@color-marker-orange: #ff7234;
+@color-marker-yellow: #f9e527;
+@color-marker-green: #03d42c;
+@color-marker-blue: #229dff;
+@color-marker-purple: #ba3eff;
+@color-marker-pink: #ff90e4;
+
 .ranklist {
   .accepted {
     background: #99ff99;
@@ -192,6 +200,41 @@
 
   img {
     max-width: 100%;
+  }
+
+  .marker {
+    display: inline-block;
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+
+    &.marker-red {
+      background-color: @color-marker-red;
+    }
+
+    &.marker-orange {
+      background-color: @color-marker-orange;
+    }
+
+    &.marker-yellow {
+      background-color: @color-marker-yellow;
+    }
+
+    &.marker-green {
+      background-color: @color-marker-green;
+    }
+
+    &.marker-blue {
+      background-color: @color-marker-blue;
+    }
+
+    &.marker-purple {
+      background-color: @color-marker-purple;
+    }
+    
+    &.marker-pink {
+      background-color: @color-marker-pink;
+    }
   }
 }
 
