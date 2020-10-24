@@ -218,38 +218,31 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     );
   }
 
-  renderMarker = (markerId?: srk.Marker['id']) => {
-    if (!markerId) {
-      return null;
-    }
+  renderUserBody = (user: srk.User) => {
     const { data: { markers = [] } } = this.props;
     const { theme } = this.state;
-    const marker = markers.find(m => m.id === markerId);
-    if (!marker) {
-      return null;
-    }
-    const markerStyle = marker.style;
     let className = '';
-    let textColor: ThemeColor = {
-      [EnumTheme.light]: undefined,
-      [EnumTheme.dark]: undefined,
-    };
-    let backgroundColor: ThemeColor = {
-      [EnumTheme.light]: undefined,
-      [EnumTheme.dark]: undefined,
-    };
-    if (typeof markerStyle === 'string') {
-      className = `marker-${markerStyle}`;
-    } else if (markerStyle) {
-      const style = this.resolveStyle(markerStyle);
-      textColor = style.textColor;
-      backgroundColor = style.backgroundColor;
+    let bodyStyle: React.CSSProperties = {};
+    let bodyLabel = '';
+    const marker = markers.find(m => m.id === user.marker);
+    if (marker) {
+      bodyLabel = marker.label;
+      const markerStyle = marker.style;
+      let backgroundColor: ThemeColor = {
+        [EnumTheme.light]: undefined,
+        [EnumTheme.dark]: undefined,
+      };
+      if (typeof markerStyle === 'string') {
+        className = `marker-${markerStyle}`;
+      } else if (markerStyle) {
+        const style = this.resolveStyle(markerStyle);
+        backgroundColor = style.backgroundColor;
+        bodyStyle.backgroundImage = `linear-gradient(90deg, transparent 0%, ${backgroundColor[theme]} 100%)`;
+      }
     }
-    return <span
-      className={classnames('marker -ml-md', className)}
-      style={{ color: textColor[theme], backgroundColor: backgroundColor[theme] }}
-      title={marker.label}
-    ></span>;
+    return <td className={classnames('-text-left marker-bg', className)} style={bodyStyle} title={bodyLabel}>
+      {this.renderUserName(user)}
+    </td>
   }
 
   renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number) => {
@@ -386,10 +379,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
             {rows.map(r => <tr key={r.user.id || r.user.name}>
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
               {hasOrganization && <td className="-text-left">{r.user.organization}</td>}
-              <td className="-text-left">
-                {this.renderUserName(r.user)}
-                {this.renderMarker(r.user.marker)}
-              </td>
+              {this.renderUserBody(r.user)}
               <td className="-text-right">{r.score.value}</td>
               <td className="-text-right">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
               {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
