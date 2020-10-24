@@ -3,12 +3,14 @@ import './Ranklist.less';
 import * as srk from './srk';
 import srkChecker from './srk-checker/index.d.ti';
 import { createCheckers } from 'ts-interface-checker';
-import _ from 'lodash';
+import _, { indexOf } from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
 import TeamFilterModal from './components/TeamFilterModal';
 import Progress from "./progress"
+import { stringify } from 'querystring';
+import { analyzeScope } from '@typescript-eslint/parser/dist/analyze-scope';
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
@@ -28,20 +30,24 @@ export interface RanklistProps {
 
 interface State {
   theme: keyof typeof EnumTheme;
-  width: number;
+  rows: srk.RanklistRow[]
 }
+
 
 export default class Ranklist extends React.Component<RanklistProps, State> {
   constructor(props: RanklistProps) {
     super(props);
     this.state = {
       theme: EnumTheme.light,
-      width: 0,
+      rows: []
     };
   }
 
   componentDidMount(): void {
     this.preCheckData(this.props.data);
+    this.setState({
+      rows: this.props.data.rows
+    })
     // let fill = document.getElementById("fill");
     // var count = 0;
     // var timer = setInterval(() => {
@@ -217,10 +223,31 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
   }
 
+  selectList = (arr: string[]) => {
+    const { data } = this.props;
+    let rows = data.rows;
+    let list = []
+    for (let i = 0; i < rows.length; i++) {
+      if (arr.indexOf(String(rows[i].user.id)) >= 0) {
+        list.push(rows[i])
+      }
+    }
+    if (arr.length == 0) {
+      this.setState({
+        rows: rows
+      })
+    }
+    else {
+      this.setState({
+        rows: list
+      })
+    }
+  }
+
   render() {
     const { data } = this.props;
-    console.log('ranklist data', this.props.data);
-    const { type, version, contest, problems, series, rows, sorter, _now } = data;
+    const { rows } = this.state;
+    const { type, version, contest, problems, series, sorter, _now } = data;
     if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
@@ -235,10 +262,11 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         <Progress _now={_now} contest={contest} formatTimeDuration={this.formatTimeDuration}></Progress>
       </div>
 
-      <div>
-        <TeamFilterModal>
-          <button>show TeamFiltermodal</button>
-        </TeamFilterModal>
+      <div style={{ marginTop: "10px", display: "flex" }}>
+        <div><TeamFilterModal data={data} selectList={this.selectList}>
+          <button>筛选</button>
+        </TeamFilterModal></div>
+
       </div>
 
       <div className="rows">

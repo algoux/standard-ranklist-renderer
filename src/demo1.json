@@ -1,0 +1,313 @@
+{
+    "type": "general",
+    "version": "0.2.1",
+    "contest": {
+        "title": "\u6392\u540d\u699c\u6d4b\u8bd5",
+        "startAt": "2020-10-23T03:38:44Z",
+        "duration": [5, "h"]
+    },
+    "problems": [{
+        "title": "PTA\u4f7f\u6211\u7cbe\u795e\u7115\u53d1",
+        "alias": "A",
+        "statistics": {
+            "accepted": 4,
+            "submitted": 11
+        }
+    }, {
+        "title": "6\u7ffb\u4e86",
+        "alias": "B",
+        "statistics": {
+            "accepted": 1,
+            "submitted": 5
+        }
+    }, {
+        "title": "\u6572\u7b28\u949f",
+        "alias": "C",
+        "statistics": {
+            "accepted": 1,
+            "submitted": 4
+        }
+    }, {
+        "title": "\u5fc3\u7406\u9634\u5f71\u9762\u79ef",
+        "alias": "D",
+        "statistics": {
+            "accepted": 1,
+            "submitted": 1
+        }
+    }, {
+        "title": "\u65b0\u80d6\u5b50\u516c\u5f0f",
+        "alias": "E",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u5e78\u8fd0\u5f69\u7968",
+        "alias": "F",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u5403\u9c7c\u8fd8\u662f\u5403\u8089",
+        "alias": "G",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u4f30\u503c\u4e00\u4ebf\u7684AI\u6838\u5fc3\u4ee3\u7801",
+        "alias": "H",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u7279\u7acb\u72ec\u884c\u7684\u5e78\u798f",
+        "alias": "I",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u51b0\u5c9b\u4eba",
+        "alias": "J",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u6df1\u5165\u864e\u7a74",
+        "alias": "K",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }, {
+        "title": "\u5f69\u8679\u74f6",
+        "alias": "L",
+        "statistics": {
+            "accepted": 0,
+            "submitted": 0
+        }
+    }],
+    "rows": [{
+        "ranks": [{
+            "rank": 1
+        }],
+        "user": {
+            "name": "\u8475",
+            "id": "T004",
+            "organization": "\u5317\u65b9\u5de5\u4e1a\u5927\u5b66",
+            "teamMembers": [{
+                "name": "\u90ed\u5cf0(\u6559\u7ec3)"
+            }, {
+                "name": "\u6797\u5e05"
+            }, {
+                "name": "\u9f9a\u603f"
+            }, {
+                "name": "\u4f55\u701b\u9f99"
+            }],
+            "official": false
+        },
+        "score": {
+            "value": 3,
+            "time": [4980, "s"]
+        },
+        "statuses": [{
+            "result": "AC",
+            "time": [3420, "s"],
+            "tries": 3
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": "AC",
+            "time": [780, "s"],
+            "tries": 1
+        }, {
+            "result": "AC",
+            "time": [780, "s"],
+            "tries": 1
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }]
+    }, {
+        "ranks": [{
+            "rank": 2
+        }],
+        "user": {
+            "name": "\u56db\u6708",
+            "id": "T015",
+            "organization": "\u5317\u4eac\u4ea4\u901a\u5927\u5b66",
+            "teamMembers": [{
+                "name": "\u8bb8\u534e\u5a77(\u6559\u7ec3)"
+            }, {
+                "name": "\u4e07\u5929\u6d0b"
+            }, {
+                "name": "\u5f20\u4e50\u51ed"
+            }, {
+                "name": "\u5434\u68a6\u51dd"
+            }],
+            "official": false
+        },
+        "score": {
+            "value": 2,
+            "time": [28860, "s"]
+        },
+        "statuses": [{
+            "result": "AC",
+            "time": [660, "s"],
+            "tries": 1
+        }, {
+            "result": "AC",
+            "time": [28200, "s"],
+            "tries": 5
+        }, {
+            "result": "RJ",
+            "time": [0, "s"],
+            "tries": 2
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }]
+    }, {
+        "ranks": [{
+            "rank": 3
+        }],
+        "user": {
+            "name": "mushan",
+            "id": "T016",
+            "organization": "山东理工大学",
+            "teamMembers": [{
+                "name": "\u8bb8\u534e\u5a77(\u6559\u7ec3)"
+            }, {
+                "name": "\u4e07\u5929\u6d0b"
+            }, {
+                "name": "\u5f20\u4e50\u51ed"
+            }, {
+                "name": "\u5434\u68a6\u51dd"
+            }],
+            "official": false
+        },
+        "score": {
+            "value": 1,
+            "time": [49620, "s"]
+        },
+        "statuses": [{
+            "result": "AC",
+            "time": [49620, "s"],
+            "tries": 3
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }, {
+            "result": null,
+            "time": [0, "s"],
+            "tries": 0
+        }]
+    }],
+    "series": [{}],
+    "_now": "2020-10-23T04:38:44Z"
+}

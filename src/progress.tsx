@@ -29,10 +29,14 @@ export default class Progress extends React.Component<any, State> {
         let elapsed_time = moment.duration(moment(_now).valueOf() - moment(contest.startAt).valueOf()).as('seconds');
         let remaining_time = moment.duration(moment(moment(contest.startAt).add(this.props.formatTimeDuration(contest.duration), 'ms').format('YYYY-MM-DD HH:mm:ss')).valueOf() - moment(_now).valueOf()).as('seconds');
         time_ = 100 / (contest.duration[0] * 3600);
+        this.setState({
+            width: elapsed_time * time_,
+            elapsed: elapsed_time,
+            remaining: remaining_time
+        })
         // let fill = document.getElementById("fill");
         var timer = setInterval(() => {
             let count = this.state.width;
-
             count += time_;
             elapsed_time++;
             remaining_time--;
