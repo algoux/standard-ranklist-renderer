@@ -3,14 +3,15 @@ import './App.less';
 import Ranklist from './Ranklist';
 import demoJson from './demo.json';
 import request from './utils/request';
-import queryString from 'query-string';
 
 let isDev = process.env.NODE_ENV === 'development';
+const srkPath = 'data/ccpc2020weihai.srk';
 
 interface State {
   error: Error | null;
   errorStack: string;
   id: string;
+  srkPath: string;
   data: any;
   loading: boolean;
 }
@@ -22,6 +23,7 @@ class App extends React.Component<any, State> {
       error: null,
       errorStack: '',
       id: '',
+      srkPath,
       data: null,
       loading: false,
     };
@@ -46,33 +48,29 @@ class App extends React.Component<any, State> {
   }
 
   requestData = async () => {
-    const query = queryString.parse(window.location.search);
-    if (query.id) {
-      try {
-        this.setState({
-          loading: true,
-        });
-        const id = query.id.toString();
-        const data = await request(`data/${id}.json`, {
-          method: 'GET',
-          timeout: 30 * 1000,
-        });
-        this.setState({
-          id,
-          data,
-          loading: false,
-        });
-      } catch (e) {
-        console.error(e);
-        this.setState({
-          loading: false,
-        });
-      }
+    try {
+      this.setState({
+        loading: true,
+      });
+      const data = await request(srkPath, {
+        method: 'GET',
+        timeout: 30 * 1000,
+      });
+      this.setState({
+        data,
+        loading: false,
+      });
+    } catch (e) {
+      console.error(e);
+      this.setState({
+        loading: false,
+      });
     }
   }
 
   render() {
-    const data = this.state.data
+    const data = this.state.data;
+    const { srkPath } = this.state;
     if (this.state.error) {
       return <div className="error">
         <pre>
@@ -83,9 +81,9 @@ class App extends React.Component<any, State> {
       return <div>
         <Ranklist data={data} />
         <div className="-text-center" style={{ marginTop: '60px', marginBottom: '15px' }}>
-          Powered by Standard Ranklist<br />
+          Powered by Standard Ranklist team from SDUT<br />
           Copyright © 2019-2020 <a href="https://github.com/algoux" target="_blank">algoUX</a><br />
-          <a href={isDev ? '' : `data/${this.state.id}.json`} target="_blank">Open srk.json</a>
+          <a href={isDev ? '' : srkPath} target="_blank">Open srk.json</a>
         </div>
       </div>;
     } else if (!data && !this.state.loading) {
