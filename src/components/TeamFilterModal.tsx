@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
-import { walkUpBindingElementsAndPatterns } from 'typescript';
 
 export interface TeamFilterModalProps {
   style?: React.CSSProperties;

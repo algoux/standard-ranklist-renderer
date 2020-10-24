@@ -3,14 +3,12 @@ import './Ranklist.less';
 import * as srk from './srk';
 import srkChecker from './srk-checker/index.d.ti';
 import { createCheckers } from 'ts-interface-checker';
-import _, { indexOf } from 'lodash';
+import _ from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
 import TeamFilterModal from './components/TeamFilterModal';
 import Progress from "./progress"
-import { stringify } from 'querystring';
-import { analyzeScope } from '@typescript-eslint/parser/dist/analyze-scope';
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
@@ -65,7 +63,11 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const p = this.props;
     if (!_.isEqual(p.data, np.data)) {
       this.preCheckData(np.data);
+      this.setState({
+        rows: np.data.rows
+      })
     }
+
   }
 
   preCheckData(data: any): void {
