@@ -11,8 +11,6 @@ import TeamFilterModal from './components/TeamFilterModal';
 import Progress from "./progress"
 import Color from 'color';
 
-const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
-
 enum EnumTheme {
   light = 'light',
   dark = 'dark',
@@ -32,6 +30,13 @@ interface State {
   rows: srk.RanklistRow[],
   marker: string,
 }
+
+const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
+
+const defaultBaseColor = {
+  [EnumTheme.light]: '#ffffff',
+  [EnumTheme.dark]: '#000000',
+};
 
 
 export default class Ranklist extends React.Component<RanklistProps, State> {
@@ -178,7 +183,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       {stat ? <span className="-display-block" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
-    const bgColor = Color(backgroundColor[theme]).alpha(0.7).string();
+    const bgColor = Color(backgroundColor[theme] || defaultBaseColor[theme]).alpha(0.7).string();
     return <th key={p.title} style={{ backgroundColor: bgColor }}>{cellComp}</th>;
   }
 
