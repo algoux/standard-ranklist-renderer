@@ -9,6 +9,7 @@ import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
 import TeamFilterModal from './components/TeamFilterModal';
 import Progress from "./progress"
+import Color from 'color';
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
@@ -177,7 +178,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       {stat ? <span className="-display-block" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
-    return <th key={p.title} style={{ backgroundColor: backgroundColor[theme] }}>{cellComp}</th>;
+    const bgColor = Color(backgroundColor[theme]).alpha(0.7).string();
+    return <th key={p.title} style={{ backgroundColor: bgColor }}>{cellComp}</th>;
   }
 
   renderSingleSeriesBody = (rk: srk.RankValue, series: srk.RankSeries, row: srk.RanklistRow) => {
