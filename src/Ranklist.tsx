@@ -186,6 +186,14 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     </td>;
   }
 
+  renderUserName = (user: srk.User) => {
+    const { teamMembers = [] } = user;
+    const memberStr = teamMembers.map(m => m.name || '').join(' / ');
+    return (
+      <span title={memberStr}>{user.name}</span>
+    );
+  }
+
   renderMarker = (markerId?: srk.Marker['id']) => {
     if (!markerId) {
       return null;
@@ -279,7 +287,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
               {hasOrganization && <td className="-text-left">{r.user.organization}</td>}
               <td className="-text-left">
-                {r.user.name}
+                {this.renderUserName(r.user)}
                 {this.renderMarker(r.user.marker)}
               </td>
               <td className="-text-right">{r.score.value}</td>
