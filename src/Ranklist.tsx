@@ -186,6 +186,40 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     </td>;
   }
 
+  renderMarker = (markerId?: srk.Marker['id']) => {
+    if (!markerId) {
+      return null;
+    }
+    const { data: { markers = [] } } = this.props;
+    const { theme } = this.state;
+    const marker = markers.find(m => m.id === markerId);
+    if (!marker) {
+      return null;
+    }
+    const markerStyle = marker.style;
+    let className = '';
+    let textColor: ThemeColor = {
+      [EnumTheme.light]: undefined,
+      [EnumTheme.dark]: undefined,
+    };
+    let backgroundColor: ThemeColor = {
+      [EnumTheme.light]: undefined,
+      [EnumTheme.dark]: undefined,
+    };
+    if (typeof markerStyle === 'string') {
+      className = `marker-${markerStyle}`;
+    } else if (markerStyle) {
+      const style = this.resolveStyle(markerStyle);
+      textColor = style.textColor;
+      backgroundColor = style.backgroundColor;
+    }
+    return <span
+      className={classnames('marker -ml-md', className)}
+      style={{ color: textColor[theme], backgroundColor: backgroundColor[theme] }}
+      title={marker.label}
+    ></span>;
+  }
+
   renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number) => {
     const result = st.result;
     const commonClassName = '-text-center';
@@ -210,6 +244,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
+    const hasOrganization = rows.filter(d => d.user.organization).length > 0;
     return <div className="ranklist">
       <div className="contest -text-center">
         {this.renderContestBanner()}
@@ -232,7 +267,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <thead>
             <tr>
               {series.map(s => <th key={s.title}>{s.title}</th>)}
-              <th className="-text-left">User</th>
+              {hasOrganization && <th className="-text-left">Org.</th>}
+              <th className="-text-left">Name</th>
               <th>Score</th>
               <th>Time</th>
               {problems.map((p, index) => this.renderSingleProblemHeader(p, index))}
@@ -241,7 +277,11 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <tbody>
             {rows.map(r => <tr key={r.user.id || r.user.name}>
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
-              <td className="-text-left">{r.user.name}</td>
+              {hasOrganization && <td className="-text-left">{r.user.organization}</td>}
+              <td className="-text-left">
+                {r.user.name}
+                {this.renderMarker(r.user.marker)}
+              </td>
               <td className="-text-right">{r.score.value}</td>
               <td className="-text-right">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
               {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
