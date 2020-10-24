@@ -5,7 +5,7 @@ import demoJson from './demo.json';
 import request from './utils/request';
 
 let isDev = process.env.NODE_ENV === 'development';
-const srkPath = 'data/ccpc2020weihai.srk';
+const srkPath = 'data/ccpc2020weihai.srk.json';
 
 interface State {
   error: Error | null;
