@@ -370,10 +370,10 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <thead>
             <tr>
               {series.map(s => <th key={s.title}>{s.title}</th>)}
-              {hasOrganization && <th className="-text-left">Org.</th>}
-              <th className="-text-left">Name</th>
-              <th>Score</th>
-              <th>Time</th>
+              {hasOrganization && <th className="-text-left">学校</th>}
+              <th className="-text-left">队伍名</th>
+              <th>解题数</th>
+              <th>总时间</th>
               {problems.map((p, index) => this.renderSingleProblemHeader(p, index))}
             </tr>
           </thead>
