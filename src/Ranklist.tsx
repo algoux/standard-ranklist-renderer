@@ -39,7 +39,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     this.state = {
       theme: EnumTheme.light,
       rows: [],
-      marker: ""
+      marker: "all"
     };
   }
 

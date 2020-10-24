@@ -75,7 +75,6 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
         this.team.add(rows[i].user.name)
       }
     }
-    console.log(this.school, this.team);
 
   }
 
@@ -84,14 +83,14 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
     let rows = np.rows;
     this.school = new Set<string>();
     this.team = new Set<string>();
-    this.school_list = new Set<string>()
-    this.team_list = new Set<string>()
-    this.setState({
-      school: [],
-      team: [],
-      school_list: [],
-      team_list: []
-    })
+    // this.school_list = new Set<string>()
+    // this.team_list = new Set<string>()
+    // this.setState({
+    //   school: [],
+    //   team: [],
+    //   school_list: [],
+    //   team_list: []
+    // })
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].user.organization) {
         this.school.add(String(rows[i].user.organization));
