@@ -28,7 +28,8 @@ export interface RanklistProps {
 
 interface State {
   theme: keyof typeof EnumTheme;
-  rows: srk.RanklistRow[]
+  rows: srk.RanklistRow[],
+  marker: string,
 }
 
 
@@ -37,7 +38,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     super(props);
     this.state = {
       theme: EnumTheme.light,
-      rows: []
+      rows: [],
+      marker: ""
     };
   }
 
@@ -277,8 +279,25 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       }
     }
     if (arr.length == 0) {
+      let list2 = [];
+      if (this.state.marker == "all") {
+        list2 = rows
+      }
+      else if (this.state.marker != "") {
+        let list1 = [];
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].user.marker == this.state.marker) {
+            list1.push(String(rows[i].user.id))
+          }
+        }
+        for (let i = 0; i < rows.length; i++) {
+          if (list1.indexOf(String(rows[i].user.id)) >= 0) {
+            list2.push(rows[i])
+          }
+        }
+      }
       this.setState({
-        rows: rows
+        rows: list2
       })
     }
     else {
@@ -288,10 +307,37 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
   }
 
+  showChange = (e: any) => {
+    let value = e.target.value;
+    const { markers, rows } = this.props.data;
+    let list: string[] = [];
+    if (value == "all") {
+      list = []
+    }
+    else {
+      if (markers) {
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].user.marker == value) {
+            list.push(String(rows[i].user.id))
+          }
+        }
+      }
+    }
+    let that = this;
+    this.setState({
+      marker: value
+    }, () => {
+      that.selectList(list);
+    })
+
+
+  }
+
   render() {
     const { data } = this.props;
     const { rows } = this.state;
-    const { type, version, contest, problems, series, sorter, _now } = data;
+
+    const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
     }
@@ -308,9 +354,19 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       </div>
 
       <div style={{ marginTop: "10px", display: "flex" }}>
-        <div><TeamFilterModal data={data} selectList={this.selectList}>
-          <button>筛选</button>
-        </TeamFilterModal></div>
+        <div>
+          {markers ? <select onChange={this.showChange}>
+            <option value="all">全部榜单</option>
+            {markers.map((item) => <option value={item.id}>{item.label}</option>)}
+
+          </select> : ""}
+
+        </div>
+        <div style={{ marginLeft: "30px" }}>
+          <TeamFilterModal rows={rows} selectList={this.selectList}>
+            <button>筛选</button>
+          </TeamFilterModal>
+        </div>
 
       </div>
 

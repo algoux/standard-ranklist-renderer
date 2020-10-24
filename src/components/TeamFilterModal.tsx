@@ -1,14 +1,19 @@
 import React from 'react';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
+import * as srk from '../srk';
 
 export interface TeamFilterModalProps {
   style?: React.CSSProperties;
   wrapClassName?: string;
-  data: any;
+  rows: any;
   selectList: Function
 }
 
+
+export interface RanklistProps {
+  rows: srk.RanklistRow[];
+}
 interface State {
   visible: boolean;
   mousePosition?: {
@@ -58,8 +63,9 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
   }
 
   componentDidMount() {
-    const { data } = this.props;
-    let rows = data.rows;
+    const { rows } = this.props;
+    // let rows = data.rows;
+    console.log(rows);
 
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].user.organization) {
@@ -69,7 +75,33 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
         this.team.add(rows[i].user.name)
       }
     }
+    console.log(this.school, this.team);
+
   }
+
+  componentWillReceiveProps(np: RanklistProps): void {
+    const p = this.props;
+    let rows = np.rows;
+    this.school = new Set<string>();
+    this.team = new Set<string>();
+    this.school_list = new Set<string>()
+    this.team_list = new Set<string>()
+    this.setState({
+      school: [],
+      team: [],
+      school_list: [],
+      team_list: []
+    })
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].user.organization) {
+        this.school.add(String(rows[i].user.organization));
+      }
+      if (rows[i].user.name) {
+        this.team.add(rows[i].user.name)
+      }
+    }
+  }
+
 
   searchSchool = (name: any) => {
     let str = name.target ? name.target.value : "";
@@ -112,8 +144,10 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
   }
 
   onSearch = () => {
-    const { data } = this.props;
-    let rows = data.rows;
+    const { rows } = this.props;
+
+
+    // let rows = data.rows;
     let params = new Set<string>();
     for (let i = 0; i < rows.length; i++) {
       if (this.school_list.has(rows[i].user.organization) || this.team_list.has(rows[i].user.name)) {
