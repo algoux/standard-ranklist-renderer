@@ -184,7 +184,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
     const bgColor = Color(backgroundColor[theme] || defaultBackgroundColor[theme]).alpha(0.7).string();
-    return <th key={p.title} style={{ backgroundColor: bgColor }}>{cellComp}</th>;
+    return <th key={p.title} className="-nowrap" style={{ backgroundColor: bgColor }}>{cellComp}</th>;
   }
 
   renderSingleSeriesBody = (rk: srk.RankValue, series: srk.RankSeries, row: srk.RanklistRow) => {
@@ -210,7 +210,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
     return <td
       key={series.title}
-      className={classnames('-text-right', className)}
+      className={classnames('-text-right -nowrap', className)}
       style={{ color: textColor[theme], backgroundColor: backgroundColor[theme] }}
     >
       {innerComp}
@@ -247,14 +247,14 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         bodyStyle.backgroundImage = `linear-gradient(90deg, transparent 0%, ${backgroundColor[theme]} 100%)`;
       }
     }
-    return <td className={classnames('-text-left marker-bg', className)} style={bodyStyle} title={bodyLabel}>
+    return <td className={classnames('-text-left -nowrap marker-bg', className)} style={bodyStyle} title={bodyLabel}>
       {this.renderUserName(user)}
     </td>
   }
 
   renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number) => {
     const result = st.result;
-    const commonClassName = '-text-center';
+    const commonClassName = '-text-center -nowrap';
     switch (result) {
       case 'FB':
         return <td className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
@@ -265,7 +265,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       case 'RJ':
         return <td className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
       default:
-        return <td></td>;
+        return <td className={commonClassName}></td>;
     }
   }
 
@@ -374,21 +374,21 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         <table>
           <thead>
             <tr>
-              {series.map(s => <th key={s.title}>{s.title}</th>)}
-              {hasOrganization && <th className="-text-left">学校</th>}
-              <th className="-text-left">队伍名</th>
-              <th>解题数</th>
-              <th>总时间</th>
+              {series.map(s => <th key={s.title} className="-nowrap">{s.title}</th>)}
+              {hasOrganization && <th className="-text-left -nowrap">学校</th>}
+              <th className="-text-left -nowrap">队伍名</th>
+              <th className="-nowrap">解题数</th>
+              <th className="-nowrap">总时间</th>
               {problems.map((p, index) => this.renderSingleProblemHeader(p, index))}
             </tr>
           </thead>
           <tbody>
             {rows.map(r => <tr key={r.user.id || r.user.name}>
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
-              {hasOrganization && <td className="-text-left">{r.user.organization}</td>}
+              {hasOrganization && <td className="-text-left -nowrap">{r.user.organization}</td>}
               {this.renderUserBody(r.user)}
-              <td className="-text-right">{r.score.value}</td>
-              <td className="-text-right">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
+              <td className="-text-right -nowrap">{r.score.value}</td>
+              <td className="-text-right -nowrap">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
               {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
             </tr>)}
           </tbody>
