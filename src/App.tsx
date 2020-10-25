@@ -56,7 +56,7 @@ class App extends React.Component<any, State> {
         method: 'GET',
         timeout: 30 * 1000,
       });
-      console.log('requestData', JSON.stringify(data));
+      console.log('requestData', typeof data, data, JSON.stringify(data));
       this.setState({
         data,
         loading: false,
