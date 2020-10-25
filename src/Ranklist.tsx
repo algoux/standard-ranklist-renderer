@@ -73,6 +73,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   UNSAFE_componentWillReceiveProps(np: RanklistProps): void {
     const p = this.props;
     if (!_.isEqual(p.data, np.data)) {
+      console.log('componentWillReceiveProp', JSON.stringify(np.data));
       this.preCheckData(np.data);
       this.setState({
         rows: np.data.rows,
@@ -84,6 +85,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   preCheckData(data: any): void {
     try {
+      console.log('preCheckData', JSON.stringify(data));
       ranklistChecker.check(data);
     } catch (e) {
       throw new Error('Ranklist Data Check ' + e.toString());
@@ -375,7 +377,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   render() {
     const { data } = this.props;
     const { rows, rows_select } = this.state;
-
+    console.log('render', JSON.stringify(rows));
     const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
