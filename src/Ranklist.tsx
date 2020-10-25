@@ -29,6 +29,7 @@ export interface RanklistProps {
 interface State {
   theme: keyof typeof EnumTheme;
   rows: srk.RanklistRow[],
+  rows_select: srk.RanklistRow[],
   marker: string,
 }
 
@@ -39,14 +40,16 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     this.state = {
       theme: EnumTheme.light,
       rows: [],
-      marker: "all"
+      marker: "all",
+      rows_select: []
     };
   }
 
   componentDidMount(): void {
     this.preCheckData(this.props.data);
     this.setState({
-      rows: this.props.data.rows
+      rows: this.props.data.rows,
+      rows_select: this.props.data.rows
     })
     // let fill = document.getElementById("fill");
     // var count = 0;
@@ -66,7 +69,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     if (!_.isEqual(p.data, np.data)) {
       this.preCheckData(np.data);
       this.setState({
-        rows: np.data.rows
+        rows: np.data.rows,
+        rows_select: np.data.rows
       })
     }
 
@@ -272,25 +276,27 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       }
     }
     if (arr.length == 0) {
-      let list2 = [];
-      if (this.state.marker == "all") {
-        list2 = rows
-      }
-      else if (this.state.marker != "") {
-        let list1 = [];
-        for (let i = 0; i < rows.length; i++) {
-          if (rows[i].user.marker == this.state.marker) {
-            list1.push(String(rows[i].user.id))
-          }
-        }
-        for (let i = 0; i < rows.length; i++) {
-          if (list1.indexOf(String(rows[i].user.id)) >= 0) {
-            list2.push(rows[i])
-          }
-        }
-      }
+      // let list2 = [];
+      // if (this.state.marker == "all") {
+      //   list2 = rows
+      // }
+      // else if (this.state.marker != "") {
+      //   let list1 = [];
+      //   for (let i = 0; i < rows.length; i++) {
+      //     if (rows[i].user.marker == this.state.marker) {
+      //       list1.push(String(rows[i].user.id))
+      //     }
+      //   }
+      //   for (let i = 0; i < rows.length; i++) {
+      //     if (list1.indexOf(String(rows[i].user.id)) >= 0) {
+      //       list2.push(rows[i])
+      //     }
+      //   }
+      // }
+
+      // let that = this;
       this.setState({
-        rows: list2
+        rows: this.state.rows_select,
       })
     }
     else {
@@ -298,6 +304,39 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         rows: list
       })
     }
+  }
+
+  changeList = (arr: string[]) => {
+    const { data } = this.props;
+    let rows = data.rows;
+    // for (let i = 0; i < rows.length; i++) {
+    //   if (arr.indexOf(String(rows[i].user.id)) >= 0) {
+    //     list.push(rows[i])
+    //   }
+    // }
+    let list2 = [];
+    if (this.state.marker == "all") {
+      list2 = rows
+    }
+    else if (this.state.marker != "") {
+      let list1 = [];
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].user.marker == this.state.marker) {
+          list1.push(String(rows[i].user.id))
+        }
+      }
+      for (let i = 0; i < rows.length; i++) {
+        if (list1.indexOf(String(rows[i].user.id)) >= 0) {
+          list2.push(rows[i])
+        }
+      }
+    }
+    let that = this;
+    this.setState({
+      rows_select: list2,
+    }, () => {
+      that.selectList([])
+    })
   }
 
   showChange = (e: any) => {
@@ -320,7 +359,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     this.setState({
       marker: value
     }, () => {
-      that.selectList(list);
+      that.changeList(list);
     })
 
 
@@ -328,7 +367,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   render() {
     const { data } = this.props;
-    const { rows } = this.state;
+    const { rows, rows_select } = this.state;
 
     const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
@@ -356,7 +395,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
         </div>
         <div style={{ marginLeft: "30px" }}>
-          <TeamFilterModal rows={rows} selectList={this.selectList}>
+          <TeamFilterModal rows={rows} rows_select={rows_select} selectList={this.selectList}>
             <button>筛选</button>
           </TeamFilterModal>
         </div>

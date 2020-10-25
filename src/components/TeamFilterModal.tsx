@@ -7,12 +7,14 @@ export interface TeamFilterModalProps {
   style?: React.CSSProperties;
   wrapClassName?: string;
   rows: any;
-  selectList: Function
+  selectList: Function;
+  rows_select: any
 }
 
 
 export interface RanklistProps {
-  rows: srk.RanklistRow[];
+  rows_select: srk.RanklistRow[];
+
 }
 interface State {
   visible: boolean;
@@ -63,9 +65,10 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
   }
 
   componentDidMount() {
-    const { rows } = this.props;
+    const { rows_select } = this.props;
     // let rows = data.rows;
-    console.log(rows);
+    // console.log(rows);
+    let rows = rows_select
 
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].user.organization) {
@@ -80,7 +83,7 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
 
   componentWillReceiveProps(np: RanklistProps): void {
     const p = this.props;
-    let rows = np.rows;
+    let rows = np.rows_select;
     this.school = new Set<string>();
     this.team = new Set<string>();
     // this.school_list = new Set<string>()
@@ -143,9 +146,9 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
   }
 
   onSearch = () => {
-    const { rows } = this.props;
+    const { rows_select } = this.props;
 
-
+    let rows = rows_select
     // let rows = data.rows;
     let params = new Set<string>();
     for (let i = 0; i < rows.length; i++) {
