@@ -33,9 +33,9 @@ interface State {
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
 
-const defaultBaseColor = {
+const defaultBackgroundColor = {
   [EnumTheme.light]: '#ffffff',
-  [EnumTheme.dark]: '#000000',
+  [EnumTheme.dark]: '#191919',
 };
 
 
@@ -183,7 +183,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       {stat ? <span className="-display-block" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
-    const bgColor = Color(backgroundColor[theme] || defaultBaseColor[theme]).alpha(0.7).string();
+    const bgColor = Color(backgroundColor[theme] || defaultBackgroundColor[theme]).alpha(0.7).string();
     return <th key={p.title} style={{ backgroundColor: bgColor }}>{cellComp}</th>;
   }
 
