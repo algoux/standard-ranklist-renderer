@@ -11,6 +11,7 @@ export interface SelectDropdownProps {
   }[];
   onChange?: (selected: string[]) => void;
   onConfirm?: (selected: string[]) => void;
+  // onConfirm?: () => void;
 }
 
 interface State {
@@ -30,14 +31,19 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
   selected: string[] = [];
 
   onVisibleChange = (visible: boolean) => {
+    const { onConfirm } = this.props;
     this.setState({
       visible,
     });
+    if (onConfirm) {
+      onConfirm(this.selected)
+    }
   }
 
   saveSelected = ({ selectedKeys }: SelectInfo) => {
     const { onChange } = this.props;
     this.selected = selectedKeys as string[];
+
     if (onChange) {
       onChange(this.selected);
     }
@@ -70,7 +76,8 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         multiple
         onSelect={this.saveSelected}
         onDeselect={this.saveSelected}
-    >
+        style={{ maxHeight: '400px', overflow: "auto" }}
+      >
         <li className="rc-dropdown-menu-item">
           <input
             value={search}
@@ -81,7 +88,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         </li>
         {this.getOptions().map(item => <MenuItem key={item.value} style={{ paddingRight: '36px' }}>{item.name}</MenuItem>)}
         <Divider />
-        <MenuItem disabled>
+        {/* <MenuItem disabled>
           <button
             style={{
               cursor: 'pointer',
@@ -90,7 +97,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
             onClick={this.confirm}
           >OK
           </button>
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     );
 

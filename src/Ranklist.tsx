@@ -7,10 +7,11 @@ import _ from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
-import TeamFilterModal from './components/TeamFilterModal';
+// import TeamFilterModal from './components/TeamFilterModal';
 import Progress from "./progress"
 import Color from 'color';
-
+// import SelectDropdown from './components/SelectDropdown'
+import SelectList from './SelectList'
 enum EnumTheme {
   light = 'light',
   dark = 'dark',
@@ -28,7 +29,7 @@ export interface RanklistProps {
 interface State {
   theme: keyof typeof EnumTheme;
   rows: srk.RanklistRow[],
-  rows_select: srk.RanklistRow[],
+  // rows_select: srk.RanklistRow[],
   marker: string,
 }
 
@@ -47,7 +48,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       theme: EnumTheme.light,
       rows: [],
       marker: "all",
-      rows_select: []
+      // rows_select: []
     };
   }
 
@@ -55,7 +56,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     this.preCheckData(this.props.data);
     this.setState({
       rows: this.props.data.rows,
-      rows_select: this.props.data.rows
+      // rows_select: this.props.data.rows
     })
     // let fill = document.getElementById("fill");
     // var count = 0;
@@ -77,7 +78,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       this.preCheckData(np.data);
       this.setState({
         rows: np.data.rows,
-        rows_select: np.data.rows
+        // rows_select: np.data.rows
       })
     }
 
@@ -284,99 +285,14 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         list.push(rows[i])
       }
     }
-    if (arr.length == 0) {
-      // let list2 = [];
-      // if (this.state.marker == "all") {
-      //   list2 = rows
-      // }
-      // else if (this.state.marker != "") {
-      //   let list1 = [];
-      //   for (let i = 0; i < rows.length; i++) {
-      //     if (rows[i].user.marker == this.state.marker) {
-      //       list1.push(String(rows[i].user.id))
-      //     }
-      //   }
-      //   for (let i = 0; i < rows.length; i++) {
-      //     if (list1.indexOf(String(rows[i].user.id)) >= 0) {
-      //       list2.push(rows[i])
-      //     }
-      //   }
-      // }
-
-      // let that = this;
-      this.setState({
-        rows: this.state.rows_select,
-      })
-    }
-    else {
-      this.setState({
-        rows: list
-      })
-    }
-  }
-
-  changeList = (arr: string[]) => {
-    const { data } = this.props;
-    let rows = data.rows;
-    // for (let i = 0; i < rows.length; i++) {
-    //   if (arr.indexOf(String(rows[i].user.id)) >= 0) {
-    //     list.push(rows[i])
-    //   }
-    // }
-    let list2 = [];
-    if (this.state.marker == "all") {
-      list2 = rows
-    }
-    else if (this.state.marker != "") {
-      let list1 = [];
-      for (let i = 0; i < rows.length; i++) {
-        if (rows[i].user.marker == this.state.marker) {
-          list1.push(String(rows[i].user.id))
-        }
-      }
-      for (let i = 0; i < rows.length; i++) {
-        if (list1.indexOf(String(rows[i].user.id)) >= 0) {
-          list2.push(rows[i])
-        }
-      }
-    }
-    let that = this;
     this.setState({
-      rows_select: list2,
-    }, () => {
-      that.selectList([])
+      rows: list
     })
-  }
-
-  showChange = (e: any) => {
-    let value = e.target.value;
-    const { markers, rows } = this.props.data;
-    let list: string[] = [];
-    if (value == "all") {
-      list = []
-    }
-    else {
-      if (markers) {
-        for (let i = 0; i < rows.length; i++) {
-          if (rows[i].user.marker == value) {
-            list.push(String(rows[i].user.id))
-          }
-        }
-      }
-    }
-    let that = this;
-    this.setState({
-      marker: value
-    }, () => {
-      that.changeList(list);
-    })
-
-
   }
 
   render() {
     const { data } = this.props;
-    const { rows, rows_select } = this.state;
+    const { rows } = this.state;
     console.log('render', JSON.stringify(rows));
     const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
@@ -395,20 +311,9 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       </div>
 
       <div style={{ marginTop: "10px", display: "flex" }}>
-        <div>
-          {markers ? <select onChange={this.showChange}>
-            <option value="all">全部榜单</option>
-            {markers.map((item) => <option value={item.id}>{item.label}</option>)}
-
-          </select> : ""}
-
+        <div >
+          <SelectList data={data.rows} markers={markers} onConfirm={this.selectList} />
         </div>
-        <div style={{ marginLeft: "30px" }}>
-          <TeamFilterModal rows={rows} rows_select={rows_select} selectList={this.selectList}>
-            <button>筛选</button>
-          </TeamFilterModal>
-        </div>
-
       </div>
 
       <div className="rows">
