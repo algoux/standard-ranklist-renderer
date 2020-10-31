@@ -158,7 +158,7 @@ export default class SelectList extends React.Component<SelectListProps, State> 
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }}>
           {markers ? <select onChange={this.saveMarker}>
             <option value='all'>默认</option>
-            {markers.map((item) => <option value={item.id}>{item.label}</option>)}
+            {markers.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
           </select> : ''}
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >

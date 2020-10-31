@@ -135,6 +135,10 @@
 @color-bronze: #d69872;
 @color-iron: #a94442;
 
+@color-accepted: #009a04;
+@color-rejected: #f75757;
+@color-frozen: #727bec;
+
 @color-marker-red: #ff0000;
 @color-marker-orange: #ff7234;
 @color-marker-yellow: #f9e527;
@@ -143,7 +147,25 @@
 @color-marker-purple: #ba3eff;
 @color-marker-pink: #ff90e4;
 
+
 @color-bg: #ffffff;
+
+.table {
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  thead>tr>th {
+    padding: 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tbody>tr>td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+  }
+}
 
 .ranklist {
   .accepted {
@@ -314,4 +336,56 @@ a {
   text-align: center;
   background-color: #6caf00;
   color: #ffffff;
+}
+
+@keyframes masked-animation {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
+}
+
+.result {
+  font-weight: 500;
+  &.result-fb {
+    @color-accepted-masked: #03f90b;
+    color: @color-accepted;
+    background-image: -webkit-linear-gradient(left, @color-accepted, @color-accepted-masked 25%, @color-accepted 50%, @color-accepted-masked 75%, @color-accepted);
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 100%;
+    animation: masked-animation 2s infinite linear;
+  }
+  &.result-ac {
+    color: @color-accepted;
+  }
+  &.result-rj {
+    color: @color-rejected;
+  }
+  &.result-fz {
+    color: @color-frozen;
+  }
+}
+
+.solutions-table {
+  width: 100%;
+  font-size: 15px;
+
+  thead>tr>th {
+    padding: 6px;
+    padding-top: 0;
+  }
+
+  tbody>tr>td {
+    padding: 6px;
+  }
+
+  tbody>tr:last-of-type {
+    &>td {
+      border-bottom: none;
+    }
+  }
 }

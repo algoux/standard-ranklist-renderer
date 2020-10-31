@@ -7,11 +7,10 @@ import _ from 'lodash';
 import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
-// import TeamFilterModal from './components/TeamFilterModal';
-import Progress from "./progress"
+import Progress from './progress'
 import Color from 'color';
-// import SelectDropdown from './components/SelectDropdown'
 import SelectList from './SelectList'
+import { solutionsModal } from './components/SolutionsModal';
 enum EnumTheme {
   light = 'light',
   dark = 'dark',
@@ -259,21 +258,72 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     </td>
   }
 
-  renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number) => {
+  renderResultLabel = (result: srk.Solution['result']) => {
+    switch (result) {
+      case 'FB':
+        return <span className="result result-fb">First Blood</span>;
+      case 'AC':
+        return <span className="result result-ac">Accepted</span>;
+      case 'RJ':
+        return <span className="result result-rj">Rejected</span>;
+      case '?':
+        return <span className="result result-fz">Frozen</span>;
+      case 'WA':
+        return <span className="result result-rj">Wrong Answer</span>;
+      case 'PE':
+        return <span className="result result-rj">Presentation Error</span>;
+      case 'TLE':
+        return <span className="result result-rj">Time Limit Exceeded</span>;
+      case 'MLE':
+        return <span className="result result-rj">Memory Limit Exceeded</span>;
+      case 'OLE':
+        return <span className="result result-rj">Output Limit Exceeded</span>;
+      case 'RTE':
+        return <span className="result result-rj">Runtime Error</span>;
+      case 'CE':
+        return <span className="result">Compile Error</span>;
+      case 'UKE':
+        return <span className="result">Unknown Error</span>;
+      case null:
+        return <span className="result">--</span>;
+      default:
+        return <span className="result">{result}</span>;
+    }
+  }
+
+  renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number, user: srk.User) => {
     const { data: { problems } } = this.props;
     const result = st.result;
     const commonClassName = '-text-center -nowrap';
     const problem = problems[problemIndex] || {};
     const key = problem.alias || problem.title || problemIndex;
+    const solutions = [...st.solutions || []].reverse();
+    const onClick = solutions.length ? (e: React.MouseEvent) => solutionsModal.modal({
+      title: `Solutions of ${numberToAlphabet(problemIndex)} (${user.name})`,
+      content: <table className="table solutions-table">
+        <thead>
+          <tr>
+            <th className="-text-left">Result</th>
+            <th className="-text-right">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {solutions.map((s, index) => <tr key={`${s.result}_${s.time[0]}_${index}`}>
+            <td>{this.renderResultLabel(s.result)}</td>
+            <td className="-text-right">{secToTimeStr(this.formatTimeDuration(s.time, 's'))}</td>
+          </tr>)}
+        </tbody>
+      </table>,
+    }, e) : () => {};
     switch (result) {
       case 'FB':
-        return <td key={key} className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
+        return <td key={key} onClick={onClick} className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case 'AC':
-        return <td key={key} className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
+        return <td key={key} onClick={onClick} className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case '?':
-        return <td key={key} className={classnames(commonClassName, 'frozen')}>{st.tries}</td>;
+        return <td key={key} onClick={onClick} className={classnames(commonClassName, 'frozen')}>{st.tries}</td>;
       case 'RJ':
-        return <td key={key} className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
+        return <td key={key} onClick={onClick} className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
       default:
         return <td key={key} className={commonClassName}></td>;
     }
@@ -296,7 +346,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       return <div>Ranklist type "{type}" is not supported</div>
     }
     const hasOrganization = rows.filter(d => d.user.organization).length > 0;
-    return <div className="ranklist">
+    return <div className="table ranklist">
       <div className="contest -text-center">
         {this.renderContestBanner()}
         <h2>{contest.title}</h2>
@@ -333,7 +383,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
                 {this.renderUserBody(r.user)}
                 <td className="-text-right -nowrap">{r.score.value}</td>
                 <td className="-text-right -nowrap">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
-                {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
+                {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index, r.user))}
               </tr>
               : null)}
           </tbody>
