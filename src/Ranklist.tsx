@@ -74,7 +74,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   UNSAFE_componentWillReceiveProps(np: RanklistProps): void {
     const p = this.props;
     if (!_.isEqual(p.data, np.data)) {
-      console.log('componentWillReceiveProp', JSON.stringify(np.data));
+      // console.log('componentWillReceiveProp', JSON.stringify(np.data));
       this.preCheckData(np.data);
       this.setState({
         rows: np.data.rows,
@@ -86,7 +86,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   preCheckData(data: any): void {
     try {
-      console.log('preCheckData', JSON.stringify(data));
+      // console.log('preCheckData', JSON.stringify(data));
       ranklistChecker.check(data);
     } catch (e) {
       throw new Error('Ranklist Data Check ' + e.toString());
@@ -256,6 +256,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
     return <td className={classnames('-text-left -nowrap marker-bg', className)} style={bodyStyle} title={bodyLabel}>
       {this.renderUserName(user)}
+      {user.organization && <p className="user-second-name">{user.organization}</p>}
     </td>
   }
 
@@ -293,7 +294,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   render() {
     const { data } = this.props;
     const { rows } = this.state;
-    console.log('render', JSON.stringify(rows));
+    // console.log('render', JSON.stringify(rows));
     const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
       return <div>Ranklist type "{type}" is not supported</div>
@@ -321,17 +322,17 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <thead>
             <tr>
               {series.map(s => <th key={s.title} className="-nowrap">{s.title}</th>)}
-              {hasOrganization && <th className="-text-left -nowrap">学校</th>}
-              <th className="-text-left -nowrap">队伍名</th>
-              <th className="-nowrap">解题数</th>
-              <th className="-nowrap">总时间</th>
+              {/* {hasOrganization && <th className="-text-left -nowrap">学校</th>} */}
+              <th className="-text-left -nowrap">Name</th>
+              <th className="-nowrap">Score</th>
+              <th className="-nowrap">Time</th>
               {problems.map((p, index) => this.renderSingleProblemHeader(p, index))}
             </tr>
           </thead>
           <tbody>
             {rows.map(r => <tr key={r.user.id || r.user.name}>
               {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
-              {hasOrganization && <td className="-text-left -nowrap">{r.user.organization}</td>}
+              {/* {hasOrganization && <td className="-text-left -nowrap">{r.user.organization}</td>} */}
               {this.renderUserBody(r.user)}
               <td className="-text-right -nowrap">{r.score.value}</td>
               <td className="-text-right -nowrap">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
