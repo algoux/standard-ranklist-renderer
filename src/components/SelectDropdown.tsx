@@ -11,7 +11,6 @@ export interface SelectDropdownProps {
   }[];
   onChange?: (selected: string[]) => void;
   onConfirm?: (selected: string[]) => void;
-  // onConfirm?: () => void;
 }
 
 interface State {
@@ -35,7 +34,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
     this.setState({
       visible,
     });
-    if (onConfirm) {
+    if (!visible && onConfirm) {
       onConfirm(this.selected)
     }
   }
