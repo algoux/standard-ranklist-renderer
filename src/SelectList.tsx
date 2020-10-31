@@ -7,7 +7,7 @@ import { isEqual, uniqBy } from 'lodash';
 export interface SelectListProps {
   data: srk.RanklistRow[];
   markers: srk.Marker[] | undefined;
-  onConfirm?: (selected: string[]) => void;
+  onConfirm?: (selected: string[] | undefined) => void;
 }
 
 export interface SelectOptions {
@@ -132,13 +132,13 @@ export default class SelectList extends React.Component<SelectListProps, State> 
       this.onSearch(true);
     }
     else {
-      const { onConfirm, data } = this.props;
-      let list: string[] = [];
-      for (let i = 0; i < data.length; i++) {
-        list.push(String(data[i].user.id));
-      }
+      const { onConfirm } = this.props;
+      // let list: string[] = [];
+      // for (let i = 0; i < data.length; i++) {
+      //   list.push(String(data[i].user.id));
+      // }
       if (onConfirm) {
-        onConfirm(list)
+        onConfirm(undefined);
       }
     }
 

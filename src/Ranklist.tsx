@@ -28,9 +28,8 @@ export interface RanklistProps {
 
 interface State {
   theme: keyof typeof EnumTheme;
-  rows: srk.RanklistRow[],
-  // rows_select: srk.RanklistRow[],
-  marker: string,
+  marker: string;
+  filteredIds?: srk.User['id'][];
 }
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
@@ -46,18 +45,18 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     super(props);
     this.state = {
       theme: EnumTheme.light,
-      rows: [],
-      marker: "all",
+      marker: 'all',
+      filteredIds: undefined,
       // rows_select: []
     };
   }
 
   componentDidMount(): void {
     this.preCheckData(this.props.data);
-    this.setState({
-      rows: this.props.data.rows,
-      // rows_select: this.props.data.rows
-    })
+    // this.setState({
+    //   rows: this.props.data.rows,
+    //   // rows_select: this.props.data.rows
+    // })
     // let fill = document.getElementById("fill");
     // var count = 0;
     // var timer = setInterval(() => {
@@ -76,10 +75,10 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     if (!_.isEqual(p.data, np.data)) {
       // console.log('componentWillReceiveProp', JSON.stringify(np.data));
       this.preCheckData(np.data);
-      this.setState({
-        rows: np.data.rows,
-        // rows_select: np.data.rows
-      })
+      // this.setState({
+      //   rows: np.data.rows,
+      //   // rows_select: np.data.rows
+      // })
     }
 
   }
@@ -191,7 +190,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
     const bgColor = Color(backgroundColor[theme] || defaultBackgroundColor[theme]).alpha(0.7).string();
-    return <th key={p.title} className="-nowrap" style={{ backgroundColor: bgColor }}>{cellComp}</th>;
+    return <th key={p.alias || p.title} className="-nowrap" style={{ backgroundColor: bgColor }}>{cellComp}</th>;
   }
 
   renderSingleSeriesBody = (rk: srk.RankValue, series: srk.RankSeries, row: srk.RanklistRow) => {
@@ -256,45 +255,41 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
     return <td className={classnames('-text-left -nowrap marker-bg', className)} style={bodyStyle} title={bodyLabel}>
       {this.renderUserName(user)}
-      {user.organization && <p className="user-second-name">{user.organization}</p>}
+      {user.organization && <p className="user-second-name" title="">{user.organization}</p>}
     </td>
   }
 
   renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number) => {
+    const { data: { problems } } = this.props;
     const result = st.result;
     const commonClassName = '-text-center -nowrap';
+    const problem = problems[problemIndex] || {};
+    const key = problem.alias || problem.title || problemIndex;
     switch (result) {
       case 'FB':
-        return <td className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
+        return <td key={key} className={classnames(commonClassName, 'fb')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case 'AC':
-        return <td className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
+        return <td key={key} className={classnames(commonClassName, 'accepted')}>{st.tries}/{st.time ? this.formatTimeDuration(st.time, 'min', Math.floor) : '-'}</td>;
       case '?':
-        return <td className={classnames(commonClassName, 'frozen')}>{st.tries}</td>;
+        return <td key={key} className={classnames(commonClassName, 'frozen')}>{st.tries}</td>;
       case 'RJ':
-        return <td className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
+        return <td key={key} className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
       default:
-        return <td className={commonClassName}></td>;
+        return <td key={key} className={commonClassName}></td>;
     }
   }
 
-  selectList = (arr: string[]) => {
-    const { data } = this.props;
-    let rows = data.rows;
-    let list = []
-    for (let i = 0; i < rows.length; i++) {
-      if (arr.indexOf(String(rows[i].user.id)) >= 0) {
-        list.push(rows[i])
-      }
-    }
+  selectList = (arr: string[] | undefined) => {
     this.setState({
-      rows: list
-    })
+      filteredIds: arr,
+    });
   }
 
   render() {
     // console.log('ranklist render')
     const { data } = this.props;
-    const { rows } = this.state;
+    const rows = data.rows;
+    const { filteredIds } = this.state;
     // console.log('render', JSON.stringify(rows));
     const { type, version, contest, problems, series, sorter, _now, markers } = data;
     if (type !== 'general') {
@@ -331,14 +326,16 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
             </tr>
           </thead>
           <tbody>
-            {rows.map(r => <tr key={r.user.id || r.user.name}>
-              {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
-              {/* {hasOrganization && <td className="-text-left -nowrap">{r.user.organization}</td>} */}
-              {this.renderUserBody(r.user)}
-              <td className="-text-right -nowrap">{r.score.value}</td>
-              <td className="-text-right -nowrap">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
-              {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
-            </tr>)}
+            {rows.map(r => !filteredIds || filteredIds.includes(r.user.id)
+              ? <tr key={r.user.id || r.user.name}>
+                {r.ranks.map((rk, index) => this.renderSingleSeriesBody(rk, series[index], r))}
+                {/* {hasOrganization && <td className="-text-left -nowrap">{r.user.organization}</td>} */}
+                {this.renderUserBody(r.user)}
+                <td className="-text-right -nowrap">{r.score.value}</td>
+                <td className="-text-right -nowrap">{r.score.time ? this.formatTimeDuration(r.score.time, 'min', Math.floor) : '-'}</td>
+                {r.statuses.map((st, index) => this.renderSingleStatusBody(st, index))}
+              </tr>
+              : null)}
           </tbody>
         </table>
       </div>
