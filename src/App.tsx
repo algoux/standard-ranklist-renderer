@@ -5,7 +5,7 @@ import demoJson from './demo.json';
 import request from './utils/request';
 
 let isDev = process.env.NODE_ENV === 'development';
-const srkPath = 'data/ccpc2020weihai.srk.json';
+const srkPath = 'data/ccpc2020jinyang.srk.json';
 
 interface State {
   error: Error | null;
@@ -56,7 +56,7 @@ class App extends React.Component<any, State> {
         method: 'GET',
         timeout: 30 * 1000,
       });
-      console.log('requestData', typeof data, data, JSON.stringify(data));
+      // console.log('requestData', typeof data, data, JSON.stringify(data));
       this.setState({
         data,
         loading: false,
