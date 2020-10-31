@@ -44,12 +44,10 @@ export default class SelectList extends React.Component<SelectListProps, State> 
   }
 
   componentDidMount() {
-    console.warn('mount')
     this.setOptions(this.props.data);
   }
 
   componentWillReceiveProps(np: SelectListProps) {
-    console.warn('receive props')
     this.setOptions(np.data);
   }
 
@@ -60,7 +58,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
   }
 
   setOptions = (data: srk.RanklistRow[]) => {
-    console.time('setOptions');
     const schoolOptions = this.dataSort(uniqBy(data.map((item) => {
       return {
         name: String(item.user.organization),
@@ -77,7 +74,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
       schoolOptions,
       teamOptions,
     });
-    console.timeEnd('setOptions');
   }
 
   saveMarker = (e: any) => {
@@ -150,7 +146,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
 
 
   render() {
-    console.log('r')
     const { data, markers } = this.props;
     return (
       <div style={{ display: 'flex' }}>
