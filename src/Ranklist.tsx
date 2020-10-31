@@ -292,6 +292,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   }
 
   render() {
+    // console.log('ranklist render')
     const { data } = this.props;
     const { rows } = this.state;
     // console.log('render', JSON.stringify(rows));
@@ -321,7 +322,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         <table>
           <thead>
             <tr>
-              {series.map(s => <th key={s.title} className="-nowrap">{s.title}</th>)}
+              {series.map(s => <th key={s.title} className="series -text-right -nowrap">{s.title}</th>)}
               {/* {hasOrganization && <th className="-text-left -nowrap">学校</th>} */}
               <th className="-text-left -nowrap">Name</th>
               <th className="-nowrap">Score</th>

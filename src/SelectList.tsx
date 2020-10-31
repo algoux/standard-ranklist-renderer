@@ -97,7 +97,7 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     })
   }
 
-  onSearch = () => {
+  onSearch = (force = false) => {
     const { data, onConfirm } = this.props;
     let marker = this.state.marker;
     let markers: string[] = [];
@@ -116,8 +116,11 @@ export default class SelectList extends React.Component<SelectListProps, State> 
       .filter(d => d.user.organization && this.state.schoolList.includes(d.user.organization))
       .map(d => d.user.id as string);
     const filteredIds = arrayIntersection(...[markers, schoolToIds, this.state.teamList].filter(f => f.length));
-    if (!isEqual(filteredIds, this._filteredIds)) {
+    const filteredIdsChanged = !isEqual(filteredIds, this._filteredIds);
+    if (filteredIdsChanged) {
       this._filteredIds = filteredIds;
+    }
+    if (filteredIdsChanged || force) {
       if (onConfirm) {
         onConfirm(this._filteredIds);
       }
@@ -126,7 +129,7 @@ export default class SelectList extends React.Component<SelectListProps, State> 
 
   onSearchChange = () => {
     if (!this.state.show) {
-      this.onSearch();
+      this.onSearch(true);
     }
     else {
       const { onConfirm, data } = this.props;
