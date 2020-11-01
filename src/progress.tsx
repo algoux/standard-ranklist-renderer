@@ -61,7 +61,7 @@ export default class Progress extends React.Component<any, State> {
 
     render() {
         const { _now } = this.props;
-        return <div>
+        return <div className="progress-bar">
             {_now ?
                 <div><div id="progressbar" >
                     <div id="fill" style={{ width: this.state.width + '%' }}></div>

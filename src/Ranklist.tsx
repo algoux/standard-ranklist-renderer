@@ -11,6 +11,7 @@ import Progress from './progress'
 import Color from 'color';
 import SelectList from './SelectList'
 import { solutionsModal } from './components/SolutionsModal';
+
 enum EnumTheme {
   light = 'light',
   dark = 'dark',
@@ -261,33 +262,33 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   renderResultLabel = (result: srk.Solution['result']) => {
     switch (result) {
       case 'FB':
-        return <span className="result result-fb">First Blood</span>;
+        return <span className="solution-result-text result-fb">First Blood</span>;
       case 'AC':
-        return <span className="result result-ac">Accepted</span>;
+        return <span className="solution-result-text result-ac">Accepted</span>;
       case 'RJ':
-        return <span className="result result-rj">Rejected</span>;
+        return <span className="solution-result-text result-rj">Rejected</span>;
       case '?':
-        return <span className="result result-fz">Frozen</span>;
+        return <span className="solution-result-text result-fz">Frozen</span>;
       case 'WA':
-        return <span className="result result-rj">Wrong Answer</span>;
+        return <span className="solution-result-text result-rj">Wrong Answer</span>;
       case 'PE':
-        return <span className="result result-rj">Presentation Error</span>;
+        return <span className="solution-result-text result-rj">Presentation Error</span>;
       case 'TLE':
-        return <span className="result result-rj">Time Limit Exceeded</span>;
+        return <span className="solution-result-text result-rj">Time Limit Exceeded</span>;
       case 'MLE':
-        return <span className="result result-rj">Memory Limit Exceeded</span>;
+        return <span className="solution-result-text result-rj">Memory Limit Exceeded</span>;
       case 'OLE':
-        return <span className="result result-rj">Output Limit Exceeded</span>;
+        return <span className="solution-result-text result-rj">Output Limit Exceeded</span>;
       case 'RTE':
-        return <span className="result result-rj">Runtime Error</span>;
+        return <span className="solution-result-text result-rj">Runtime Error</span>;
       case 'CE':
-        return <span className="result">Compile Error</span>;
+        return <span className="solution-result-text">Compile Error</span>;
       case 'UKE':
-        return <span className="result">Unknown Error</span>;
+        return <span className="solution-result-text">Unknown Error</span>;
       case null:
-        return <span className="result">--</span>;
+        return <span className="solution-result-text">--</span>;
       default:
-        return <span className="result">{result}</span>;
+        return <span className="solution-result-text">{result}</span>;
     }
   }
 
@@ -357,7 +358,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         <Progress _now={_now} contest={contest} formatTimeDuration={this.formatTimeDuration}></Progress>
       </div>
 
-      <div style={{ marginTop: "10px", display: "flex" }}>
+      <div className="filter" style={{ marginTop: "10px", display: "flex" }}>
         <div >
           <SelectList data={data.rows} markers={markers} onConfirm={this.selectList} />
         </div>
