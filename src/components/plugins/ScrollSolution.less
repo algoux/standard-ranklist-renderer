@@ -1,0 +1,130 @@
+.plugin_scroll-solution {
+  @scroll-solution-width: 250px;
+  width: @scroll-solution-width;
+
+  &.Toastify__toast-container {
+    padding: 0;
+
+    &.Toastify__toast-container--bottom-left {
+      bottom: 0;
+      left: 0;
+    }
+  }
+  
+  .Toastify__toast {
+    cursor: default;
+    user-select: none;
+    margin-bottom: 0;
+    // box-shadow: none;
+    border-radius: 0px;
+    // border: 1px solid #eee;
+    padding: 0;
+    min-height: initial;
+    font-family: "Helvetica Neue", Helvetica, "Microsoft Yahei", Arial, sans-serif;
+    color: #333;
+    // height: 32px;
+
+    .container {
+      display: flex;
+      align-items: center;
+      height: 45px;
+
+      .score {
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .user {
+        width: 100%;
+        padding: 4px;
+        // width: calc(@scroll-solution-width - 30px - 30px);
+        overflow: hidden;
+        // flex: 1;
+        span {
+          overflow: hidden;
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+          // display: inline-block;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
+
+        .user-name {
+          font-size: 14px;
+        }
+
+        .user-second-name {
+          color: #828282;
+          font-size: 11px;
+        }
+      }
+
+      .problem {
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .result {
+        min-width: 45px;
+        text-align: center;
+        align-self: stretch;
+        display:flex;
+        align-items:center;
+        justify-content: center;
+
+        @keyframes bg-gradient-animation {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @keyframes blink {
+          0% {
+            opacity: 1;
+          }
+          25% {
+            opacity: .9;
+          }
+          50% {
+            opacity: .3;
+          }
+          75% {
+            opacity: .9;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        &.result-fb {
+          background-color: #4fb24f;
+          color: #fff;
+          background-image: linear-gradient(-45deg, #4fb24f, #099209, #15d015, #14cc14);
+          background-size: 400% 400%;
+          animation: bg-gradient-animation 6s infinite linear;
+
+          span {
+            animation: blink 1.5s infinite linear;
+          }
+        }
+
+        &.result-ac {
+          background-color: #4fb24f;
+          color: #fff;
+        }
+
+        &.result-rj {
+          background-color: #e23a36;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
