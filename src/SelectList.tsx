@@ -3,6 +3,7 @@ import * as srk from './srk';
 import SelectDropdown from './components/SelectDropdown'
 import { arrayIntersection } from './utils/array'
 import { isEqual, uniqBy } from 'lodash';
+import './SelectList.less';
 
 export interface SelectListProps {
   data: srk.RanklistRow[];
@@ -13,6 +14,7 @@ export interface SelectListProps {
 export interface SelectOptions {
   name: string;
   value: string
+
 }
 
 interface State {
@@ -24,6 +26,8 @@ interface State {
   schoolList: string[];
   teamList: string[];
   show: boolean;
+  dropdown: boolean;
+  dropdown_show: string
 }
 
 export default class SelectList extends React.Component<SelectListProps, State> {
@@ -39,12 +43,24 @@ export default class SelectList extends React.Component<SelectListProps, State> 
       marker: 'all',
       schoolList: [],
       teamList: [],
-      show: true
+      show: true,
+      dropdown: false,
+      dropdown_show: "默认"
     };
   }
 
   componentDidMount() {
     this.setOptions(this.props.data);
+    document.addEventListener('click', this.outDivClickHandler.bind(this))
+  }
+
+  outDivClickHandler(e: any) {
+    if (e.target.value !== "dropdown_select" && this.state.dropdown) {
+      this.setState({
+        dropdown: !this.state.dropdown
+      })
+    }
+
   }
 
   componentWillReceiveProps(np: SelectListProps) {
@@ -76,10 +92,11 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     });
   }
 
-  saveMarker = (e: any) => {
+  saveMarker = (e: string, marker: string) => {
     let that = this;
     this.setState({
-      marker: e.target.value
+      marker: e,
+      dropdown_show: marker
     }, () => {
       that.onSearch();
     })
@@ -133,10 +150,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     }
     else {
       const { onConfirm } = this.props;
-      // let list: string[] = [];
-      // for (let i = 0; i < data.length; i++) {
-      //   list.push(String(data[i].user.id));
-      // }
       if (onConfirm) {
         onConfirm(undefined);
       }
@@ -147,19 +160,39 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     })
   }
 
+  dropDown = () => {
+    this.setState({
+      dropdown: !this.state.dropdown
+    })
+  }
+
 
   render() {
     const { data, markers } = this.props;
     return (
       <div style={{ display: 'flex' }}>
-        <div >
+        <div>
           <button onClick={this.onSearchChange}>{this.state.show ? '禁用筛选' : '使用筛选'}</button>
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }}>
-          {markers ? <select onChange={this.saveMarker}>
-            <option value='all'>默认</option>
-            {markers.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
-          </select> : ''}
+          {markers ?
+            // <select onChange={this.saveMarker}>
+            //   <option value='all'>默认</option>
+            //   {markers.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+            // </select> 
+            <div style={{ position: 'relative' }}>
+              <button onClick={this.dropDown} value="dropdown_select">
+                {this.state.dropdown_show}
+                <span className="caret"></span>
+
+              </button>
+              <ul className="dropdown-menu" style={{ display: this.state.dropdown ? 'block' : 'none', maxHeight: '400px', overflow: "auto" }}>
+                <li key="all" onClick={() => this.saveMarker("all", "默认")}>默认</li>
+                {markers.map((item) => <li key={item.id} onClick={() => this.saveMarker(item.id, item.label)}>{item.label}</li>)}
+              </ul>
+            </div>
+
+            : ''}
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
           <SelectDropdown options={this.state.schoolOptions} onChange={this.saveSchoolList} onConfirm={(selected) => this.onSearch()}><button>选择学校{this.state.schoolList.length > 0 ? ` (${this.state.schoolList.length})` : ''}</button></SelectDropdown>
@@ -167,9 +200,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
           <SelectDropdown options={this.state.teamOptions} onChange={this.saveTeamList} onConfirm={(selected) => this.onSearch()}><button>选择队伍{this.state.teamList.length > 0 ? ` (${this.state.teamList.length})` : ''}</button></SelectDropdown>
         </div>
-        {/* <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }}>
-          <button onClick={this.onSearch}>筛选</button>
-        </div> */}
       </div>
     );
   }

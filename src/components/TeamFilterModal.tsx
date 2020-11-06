@@ -66,8 +66,6 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
 
   componentDidMount() {
     const { rows_select } = this.props;
-    // let rows = data.rows;
-    // console.log(rows);
     let rows = rows_select
 
     for (let i = 0; i < rows.length; i++) {
@@ -86,14 +84,6 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
     let rows = np.rows_select;
     this.school = new Set<string>();
     this.team = new Set<string>();
-    // this.school_list = new Set<string>()
-    // this.team_list = new Set<string>()
-    // this.setState({
-    //   school: [],
-    //   team: [],
-    //   school_list: [],
-    //   team_list: []
-    // })
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].user.organization) {
         this.school.add(String(rows[i].user.organization));
@@ -149,7 +139,6 @@ export default class TeamFilterModal extends React.Component<TeamFilterModalProp
     const { rows_select } = this.props;
 
     let rows = rows_select
-    // let rows = data.rows;
     let params = new Set<string>();
     for (let i = 0; i < rows.length; i++) {
       if (this.school_list.has(rows[i].user.organization) || this.team_list.has(rows[i].user.name)) {

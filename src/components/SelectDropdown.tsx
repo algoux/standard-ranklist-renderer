@@ -3,6 +3,7 @@ import Dropdown from 'rc-dropdown';
 import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 import 'rc-dropdown/assets/index.css';
 import { SelectInfo } from 'rc-menu/lib/interface';
+import './SelectDropdown.less'
 
 export interface SelectDropdownProps {
   options: {
@@ -76,6 +77,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         onSelect={this.saveSelected}
         onDeselect={this.saveSelected}
         style={{ maxHeight: '400px', overflow: "auto" }}
+        className="dropdown-menu"
       >
         <li className="rc-dropdown-menu-item">
           <input
@@ -108,6 +110,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         visible={this.state.visible}
         overlay={menu}
         animation="slide-up"
+        className="dropdown"
       >
         {/* ts-ignore */}
         {children}
