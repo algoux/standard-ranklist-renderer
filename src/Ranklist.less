@@ -352,7 +352,7 @@ a {
   &.result-fb {
     @color-accepted-masked: #03f90b;
     color: @color-accepted;
-    background-image: linear-gradient(left, @color-accepted, @color-accepted-masked 25%, @color-accepted 50%, @color-accepted-masked 75%, @color-accepted);
+    background-image: linear-gradient(90deg, @color-accepted, @color-accepted-masked 25%, @color-accepted 50%, @color-accepted-masked 75%, @color-accepted);
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
     background-clip: text;
@@ -387,5 +387,23 @@ a {
     &>td {
       border-bottom: none;
     }
+  }
+}
+
+.rc-dialog {
+  .rc-dialog-header {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 48px;
+
+    .rc-dialog-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .rc-dialog-close {
+    padding: 0 0 12px;
   }
 }

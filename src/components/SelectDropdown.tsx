@@ -77,9 +77,9 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         onSelect={this.saveSelected}
         onDeselect={this.saveSelected}
         style={{ maxHeight: '400px', overflow: "auto" }}
-        className="dropdown-menu"
+        className="select-dropdown-menu"
       >
-        <li className="rc-dropdown-menu-item">
+        <li className="rc-dropdown-menu-item select-dropdown-menu-item-input">
           <input
             value={search}
             onChange={e => this.setState({ search: e.target.value })}
@@ -110,7 +110,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         visible={this.state.visible}
         overlay={menu}
         animation="slide-up"
-        className="dropdown"
+        className="select-dropdown"
       >
         {/* ts-ignore */}
         {children}

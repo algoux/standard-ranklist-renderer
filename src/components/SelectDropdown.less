@@ -1,8 +1,27 @@
-.dropdown-menu>.rc-dropdown-menu-item {
+.select-dropdown-menu {
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+
+  &>.rc-dropdown-menu-item {
     font-size: 14px;
     color: inherit;
+  }
+
+  &>.rc-dropdown-menu-item:hover {
+    background-color: #b3ebfd;
+  }
+
+  &>.rc-dropdown-menu-item-active,
+  &>.rc-dropdown-menu-item-selected {
+    background-color: #d0f4ff;
+  }
+
+  &>.select-dropdown-menu-item-input:hover {
+    background-color: inherit;
+  }
 }
 
-.dropdown {
-    font-family: inherit
+.select-dropdown {
+  font-family: inherit;
 }

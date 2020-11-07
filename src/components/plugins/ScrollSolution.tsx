@@ -151,6 +151,7 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
       case 'RJ':
         return <div className="result result-rj">RJ</div>;
       case '?':
+      default:
         return <div className="result">?</div>;
     }
   }
