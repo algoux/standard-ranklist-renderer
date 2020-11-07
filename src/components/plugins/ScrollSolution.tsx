@@ -10,7 +10,7 @@ export interface ScrollSolutionDataItem {
   score: {
     value: srk.RankScore['value'];
   };
-  result: Exclude<srk.SolutionResultLite, null>;
+  result: Exclude<srk.SolutionResultFull, null>;
   user: srk.User;
 }
 
@@ -28,11 +28,20 @@ interface State {
 
 }
 
+const RJ_DELAY = 5 * 1000;
 const DELAY_MAP = {
   FB: 120 * 1000,
   AC: 10 * 1000,
-  RJ: 5 * 1000,
+  RJ: RJ_DELAY,
   '?': 5 * 1000,
+  WA: RJ_DELAY,
+  PE: RJ_DELAY,
+  TLE: RJ_DELAY,
+  MLE: RJ_DELAY,
+  OLE: RJ_DELAY,
+  RTE: RJ_DELAY,
+  CE: RJ_DELAY,
+  UKE: RJ_DELAY,
 };
 const POP_LIMIT = 20;
 const POP_INTERVAL = 200; // ms
@@ -144,15 +153,24 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
     switch (result) {
       case 'FB':
         return <div className="result result-fb">
-          <span>FB</span>
+          <span>{result}</span>
         </div>;
       case 'AC':
-        return <div className="result result-ac">AC</div>;
+        return <div className="result result-ac">{result}</div>;
       case 'RJ':
-        return <div className="result result-rj">RJ</div>;
+      case 'WA':
+      case 'PE':
+      case 'TLE':
+      case 'MLE':
+      case 'OLE':
+      case 'RTE':
+      case 'CE':
+      case 'UKE':
+        return <div className="result result-rj">{result}</div>;
       case '?':
-      default:
         return <div className="result">?</div>;
+      default:
+        return <div className="result">--</div>;
     }
   }
 
