@@ -7,8 +7,8 @@ import ScrollSolution from './components/plugins/ScrollSolution';
 import classnames from 'classnames';
 
 let isDev = process.env.NODE_ENV === 'development';
-const srkPath = 'data/ccpc2020mianyang.srk.json';
-const scrollSolutionPath = 'data_plugin/scroll-solution/ccpc2020mianyang.json';
+const srkPath = 'data/ccpc2020changchun.srk.json';
+const scrollSolutionPath = 'data_plugin/scroll-solution/ccpc2020changchun.json';
 
 interface State {
   error: Error | null;
