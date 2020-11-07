@@ -17,8 +17,15 @@
     background-color: #d0f4ff;
   }
 
-  &>.select-dropdown-menu-item-input:hover {
-    background-color: inherit;
+  &>.select-dropdown-menu-item-input {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+
+    &:hover {
+      background-color: inherit;
+    }
   }
 }
 
