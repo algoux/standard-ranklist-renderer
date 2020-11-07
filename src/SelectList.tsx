@@ -176,13 +176,13 @@ export default class SelectList extends React.Component<SelectListProps, State> 
         <div>
           <button onClick={this.onSearchChange} className="dropdown-button">{this.state.show ? '禁用筛选' : '使用筛选'}</button>
         </div>
-        <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }}>
+        <div style={{ marginLeft: '15px', display: this.state.show ? 'block' : 'none' }}>
           <DropDown onConfirm={(key, value) => this.saveMarker(key, value)} options={this.markersList()}>默认</DropDown>
         </div>
-        <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
+        <div style={{ marginLeft: '15px', display: this.state.show ? 'block' : 'none' }} >
           <SelectDropdown options={this.state.schoolOptions} onChange={this.saveSchoolList} onConfirm={(selected) => this.onSearch()}><button className="dropdown-button">选择学校{this.state.schoolList.length > 0 ? ` (${this.state.schoolList.length})` : ''}</button></SelectDropdown>
         </div>
-        <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
+        <div style={{ marginLeft: '15px', display: this.state.show ? 'block' : 'none' }} >
           <SelectDropdown options={this.state.teamOptions} onChange={this.saveTeamList} onConfirm={(selected) => this.onSearch()}><button className="dropdown-button">选择队伍{this.state.teamList.length > 0 ? ` (${this.state.teamList.length})` : ''}</button></SelectDropdown>
         </div>
       </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ScrollSolution.less';
-import * as srk from '../../srk';
-import request from '../../utils/request';
+import * as srk from '../../../srk';
+import request from '../../../utils/request';
 
 export interface ScrollSolutionDataItem {
   problem: srk.Problem;
@@ -19,7 +19,7 @@ export interface ScrollSolutionData {
   updatedAt: number; // timestamp (s)
 }
 
-export interface ScrollSolutionProps {
+export interface ScrollSolutionImplProps {
   dataUrl: string;
   interval: number;
 }
@@ -47,19 +47,25 @@ const POP_LIMIT = 20;
 const POP_INTERVAL = 200; // ms
 const MIN_DELAY = 1000; // ms
 
-export default class ScrollSolution extends React.Component<ScrollSolutionProps, State> {
+export default class ScrollSolutionImpl extends React.Component<ScrollSolutionImplProps, State> {
   _updatedAt: number = 0;
   _queue: ScrollSolutionDataItem[] = [];
   _popInterval: number = POP_INTERVAL;
+  _timer: number = 0;
 
-  constructor(props: ScrollSolutionProps) {
+  constructor(props: ScrollSolutionImplProps) {
     super(props);
   }
 
   componentDidMount() {
     this.popFromQueue();
     this.requestData();
-    setInterval(() => this.requestData(), this.props.interval);
+    // @ts-ignore
+    this._timer = setInterval(() => this.requestData(), this.props.interval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._timer);
   }
 
   pop(data: ScrollSolutionDataItem, delay: number) {
@@ -177,7 +183,7 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
   render() {
     return (
       <ToastContainer
-        className="plugin_scroll-solution"
+        className="plugin_scroll-solution-container"
         position="bottom-left"
         autoClose={10000}
         hideProgressBar
