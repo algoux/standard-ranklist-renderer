@@ -295,11 +295,15 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
   renderSingleStatusBody = (st: srk.RankProblemStatus, problemIndex: number, user: srk.User) => {
     const { data: { problems } } = this.props;
     const result = st.result;
-    const commonClassName = '-text-center -nowrap';
+    let commonClassName = '-text-center -nowrap -cursor-pointer';
     const problem = problems[problemIndex] || {};
     const key = problem.alias || problem.title || problemIndex;
     const solutions = [...st.solutions || []].reverse();
-    const onClick = solutions.length ? (e: React.MouseEvent) => solutionsModal.modal({
+    const hasSolutions = solutions.length > 0;
+    if (hasSolutions) {
+      commonClassName += ' -cursor-pointer';
+    }
+    const onClick = hasSolutions ? (e: React.MouseEvent) => solutionsModal.modal({
       title: `Solutions of ${numberToAlphabet(problemIndex)} (${user.name})`,
       content: <table className="table solutions-table">
         <thead>
@@ -326,7 +330,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       case 'RJ':
         return <td key={key} onClick={onClick} className={classnames(commonClassName, 'failed')}>{st.tries}</td>;
       default:
-        return <td key={key} className={commonClassName}></td>;
+        return <td key={key}></td>;
     }
   }
 
