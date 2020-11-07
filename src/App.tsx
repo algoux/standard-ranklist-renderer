@@ -35,7 +35,7 @@ class App extends React.Component<any, State> {
   componentDidMount(): void {
     if (!isDev) {
       this.requestData();
-      setInterval(() => this.requestData(), 30 * 1000);
+      setInterval(() => this.requestData(), 15 * 1000);
     } else {
       this.setState({
         data: demoJson,
