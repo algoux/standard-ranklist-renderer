@@ -186,7 +186,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const { textColor, backgroundColor } = this.resolveStyle(p.style || {});
     const innerComp = <>
       <span className="-display-block" style={{ color: textColor[theme] }}>{alias}</span>
-      {stat ? <span className="-display-block" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
+      {stat ? <span className="-display-block problem-stats" style={{ color: textColor[theme] }}>{stat.accepted} / {stat.submitted}</span> : null}
     </>;
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
     const bgColor = Color(backgroundColor[theme] || defaultBackgroundColor[theme]).alpha(0.7).string();
