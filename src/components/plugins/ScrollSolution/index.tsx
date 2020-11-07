@@ -16,8 +16,8 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
     super(props);
   }
 
-  onCheckEnable = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
+  onCheckEnable = (e: any) => {
+    if (!this.props.enabled) {
       window.location.search = '?scrollSolution=1';
     } else {
       window.location.href = `${window.location.origin}${window.location.pathname}`;
@@ -27,8 +27,8 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
   render() {
     const { enabled, dataUrl, interval } = this.props;
     const act = (
-      <div className="plugin_scroll-solution-act">
-        <input type="checkbox" onChange={this.onCheckEnable} checked={enabled} /> 实时提交 <sup>Beta</sup>
+      <div className="plugin_scroll-solution-act -cursor-pointer" onClick={this.onCheckEnable}>
+        <input type="checkbox" defaultChecked={enabled} /> 实时提交 <sup>Beta</sup>
       </div>
     );
     return <div>
