@@ -4,6 +4,7 @@ import SelectDropdown from './components/SelectDropdown'
 import { arrayIntersection } from './utils/array'
 import { isEqual, uniqBy } from 'lodash';
 import './SelectList.less';
+import DropDown from './components/DropDown'
 
 export interface SelectListProps {
   data: srk.RanklistRow[];
@@ -17,6 +18,12 @@ export interface SelectOptions {
 
 }
 
+export interface DropDownOptions {
+  key: string;
+  value: string
+
+}
+
 interface State {
   visible: boolean;
   search: string;
@@ -25,9 +32,7 @@ interface State {
   marker: string;
   schoolList: string[];
   teamList: string[];
-  show: boolean;
-  dropdown: boolean;
-  dropdown_show: string
+  show: boolean
 }
 
 export default class SelectList extends React.Component<SelectListProps, State> {
@@ -43,24 +48,12 @@ export default class SelectList extends React.Component<SelectListProps, State> 
       marker: 'all',
       schoolList: [],
       teamList: [],
-      show: true,
-      dropdown: false,
-      dropdown_show: "默认"
+      show: true
     };
   }
 
   componentDidMount() {
     this.setOptions(this.props.data);
-    document.addEventListener('click', this.outDivClickHandler.bind(this))
-  }
-
-  outDivClickHandler(e: any) {
-    if (e.target.value !== "dropdown_select" && this.state.dropdown) {
-      this.setState({
-        dropdown: !this.state.dropdown
-      })
-    }
-
   }
 
   componentWillReceiveProps(np: SelectListProps) {
@@ -96,7 +89,6 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     let that = this;
     this.setState({
       marker: e,
-      dropdown_show: marker
     }, () => {
       that.onSearch();
     })
@@ -160,45 +152,38 @@ export default class SelectList extends React.Component<SelectListProps, State> 
     })
   }
 
-  dropDown = () => {
-    this.setState({
-      dropdown: !this.state.dropdown
-    })
+  markersList(): DropDownOptions[] {
+    const { markers } = this.props;
+    let markersList = [{
+      key: 'all',
+      value: "默认"
+    }];
+    if (markers) {
+      markersList = [...markersList, ...markers.map((item) => {
+        return {
+          key: item.id,
+          value: item.label
+        }
+      })]
+    }
+    return markersList
   }
 
 
   render() {
-    const { data, markers } = this.props;
     return (
       <div style={{ display: 'flex' }}>
         <div>
-          <button onClick={this.onSearchChange}>{this.state.show ? '禁用筛选' : '使用筛选'}</button>
+          <button onClick={this.onSearchChange} className="dropdown-button">{this.state.show ? '禁用筛选' : '使用筛选'}</button>
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }}>
-          {markers ?
-            // <select onChange={this.saveMarker}>
-            //   <option value='all'>默认</option>
-            //   {markers.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
-            // </select> 
-            <div style={{ position: 'relative' }}>
-              <button onClick={this.dropDown} value="dropdown_select">
-                {this.state.dropdown_show}
-                <span className="caret"></span>
-
-              </button>
-              <ul className="dropdown-menu" style={{ display: this.state.dropdown ? 'block' : 'none', maxHeight: '400px', overflow: "auto" }}>
-                <li key="all" onClick={() => this.saveMarker("all", "默认")}>默认</li>
-                {markers.map((item) => <li key={item.id} onClick={() => this.saveMarker(item.id, item.label)}>{item.label}</li>)}
-              </ul>
-            </div>
-
-            : ''}
+          <DropDown onConfirm={(key, value) => this.saveMarker(key, value)} options={this.markersList()}>默认</DropDown>
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
-          <SelectDropdown options={this.state.schoolOptions} onChange={this.saveSchoolList} onConfirm={(selected) => this.onSearch()}><button>选择学校{this.state.schoolList.length > 0 ? ` (${this.state.schoolList.length})` : ''}</button></SelectDropdown>
+          <SelectDropdown options={this.state.schoolOptions} onChange={this.saveSchoolList} onConfirm={(selected) => this.onSearch()}><button className="dropdown-button">选择学校{this.state.schoolList.length > 0 ? ` (${this.state.schoolList.length})` : ''}</button></SelectDropdown>
         </div>
         <div style={{ marginLeft: '30px', display: this.state.show ? 'block' : 'none' }} >
-          <SelectDropdown options={this.state.teamOptions} onChange={this.saveTeamList} onConfirm={(selected) => this.onSearch()}><button>选择队伍{this.state.teamList.length > 0 ? ` (${this.state.teamList.length})` : ''}</button></SelectDropdown>
+          <SelectDropdown options={this.state.teamOptions} onChange={this.saveTeamList} onConfirm={(selected) => this.onSearch()}><button className="dropdown-button">选择队伍{this.state.teamList.length > 0 ? ` (${this.state.teamList.length})` : ''}</button></SelectDropdown>
         </div>
       </div>
     );
