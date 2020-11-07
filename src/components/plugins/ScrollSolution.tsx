@@ -28,12 +28,12 @@ interface State {
 
 }
 
-const RJ_DELAY = 5 * 1000;
+const RJ_DELAY = 10 * 1000;
 const DELAY_MAP = {
-  FB: 120 * 1000,
-  AC: 10 * 1000,
+  FB: 180 * 1000,
+  AC: 20 * 1000,
   RJ: RJ_DELAY,
-  '?': 5 * 1000,
+  '?': 10 * 1000,
   WA: RJ_DELAY,
   PE: RJ_DELAY,
   TLE: RJ_DELAY,
