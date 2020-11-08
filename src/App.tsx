@@ -6,11 +6,16 @@ import request from './utils/request';
 import ScrollSolution from './components/plugins/ScrollSolution';
 import classnames from 'classnames';
 
-let isDev = process.env.NODE_ENV === 'development';
+/** Deploy config ↓ */
+// srk
 const srkRefreshInterval = 15 * 1000;
+const srkUrl = 'data/your-ranklist.srk.json';
+// scroll solution plugin (if not needed, set `scrollSolutionUrl` as empty string)
 const scrollSolutionRefreshInterval = 2 * 1000;
-const srkUrl = 'data/ccpc2020changchun.srk.json';
-const scrollSolutionUrl = 'data_plugin/scroll-solution/ccpc2020changchun.json';
+const scrollSolutionUrl = 'data_plugin/scroll-solution/your-ranklist.json';
+/** Deploy config ↑ */
+
+let isDev = process.env.NODE_ENV === 'development';
 
 interface State {
   error: Error | null;
