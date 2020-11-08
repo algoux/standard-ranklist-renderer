@@ -118,11 +118,6 @@ class App extends React.Component<any, State> {
             enabled={enableScrollSolution}
             dataUrl={scrollSolutionUrl}
             interval={scrollSolutionRefreshInterval}
-            switchContent={
-              <span>
-                实时提交 <sup>Beta</sup>
-              </span>
-            }
           />
         </div>
       );

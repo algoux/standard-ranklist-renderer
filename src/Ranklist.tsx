@@ -463,11 +463,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
             <FilterBar
               data={data.rows}
               filters={['marker', 'userOrganization', 'userName']}
-              filterSwitchText={['启用筛选', '禁用筛选']}
               markers={markers}
-              markerSelectDefaultPlaceholder="默认"
-              userNameSelectPlaceholder="选择队伍"
-              userOrganizationSelectPlaceholder="选择学校"
               onConfirm={this.selectList}
             />
           </div>

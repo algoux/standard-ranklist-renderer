@@ -9,7 +9,7 @@
   },
   "series": [
     {
-      "title": "排名",
+      "title": "#",
       "segments": [
         {
           "title": "Gold Medalist",
@@ -29,16 +29,16 @@
       ]
     },
     {
-      "title": "总排名"
+      "title": "R#"
     },
     {
-      "title": "学校排名"
+      "title": "S#"
     }
   ],
   "markers": [
     {
       "id": "female",
-      "label": "女队",
+      "label": "Female",
       "style": "pink"
     }
   ],
