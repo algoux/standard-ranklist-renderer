@@ -7,16 +7,19 @@ import ScrollSolution from './components/plugins/ScrollSolution';
 import classnames from 'classnames';
 
 let isDev = process.env.NODE_ENV === 'development';
-const srkPath = 'data/ccpc2020changchun.srk.json';
-const scrollSolutionPath = 'data_plugin/scroll-solution/ccpc2020changchun.json';
+const srkRefreshInterval = 15 * 1000;
+const scrollSolutionRefreshInterval = 2 * 1000;
+const srkUrl = 'data/ccpc2020changchun.srk.json';
+const scrollSolutionUrl = 'data_plugin/scroll-solution/ccpc2020changchun.json';
 
 interface State {
   error: Error | null;
   errorStack: string;
-  id: string;
-  srkPath: string;
   data: any;
   loading: boolean;
+  id: string;
+  srkUrl: string;
+  scrollSolutionUrl?: string;
 }
 
 class App extends React.Component<any, State> {
@@ -25,17 +28,18 @@ class App extends React.Component<any, State> {
     this.state = {
       error: null,
       errorStack: '',
-      id: '',
-      srkPath,
       data: null,
       loading: false,
+      id: '',
+      srkUrl,
+      scrollSolutionUrl,
     };
   }
 
   componentDidMount(): void {
     if (!isDev) {
       this.requestData();
-      setInterval(() => this.requestData(), 15 * 1000);
+      setInterval(() => this.requestData(), srkRefreshInterval);
     } else {
       this.setState({
         data: demoJson,
@@ -55,7 +59,7 @@ class App extends React.Component<any, State> {
       this.setState({
         loading: true,
       });
-      const data = await request(srkPath, {
+      const data = await request(this.state.srkUrl, {
         method: 'GET',
         timeout: 30 * 1000,
       });
@@ -74,7 +78,7 @@ class App extends React.Component<any, State> {
 
   render() {
     const data = this.state.data;
-    const { srkPath } = this.state;
+    const { srkUrl, scrollSolutionUrl } = this.state;
     if (this.state.error) {
       return (
         <div className="error">
@@ -106,14 +110,14 @@ class App extends React.Component<any, State> {
               Standard Ranklist
             </a>{' '}
             renderer.{' '}
-            <a href={isDev ? '' : srkPath} target="_blank" rel="noopener noreferrer">
+            <a href={srkUrl} target="_blank" rel="noopener noreferrer">
               Open srk.json
             </a>
           </div>
           <ScrollSolution
             enabled={enableScrollSolution}
-            dataUrl={scrollSolutionPath}
-            interval={2000}
+            dataUrl={scrollSolutionUrl}
+            interval={scrollSolutionRefreshInterval}
             switchContent={
               <span>
                 实时提交 <sup>Beta</sup>
