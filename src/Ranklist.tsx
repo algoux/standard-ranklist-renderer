@@ -8,9 +8,13 @@ import moment from 'moment';
 import { numberToAlphabet, secToTimeStr } from './utils/format';
 import classnames from 'classnames';
 import Color from 'color';
+import semver from 'semver';
 import { solutionsModal } from './components/SolutionsModal';
 import ProgressBar from './ProgressBar';
 import FilterBar from './FilterBar';
+
+const MIN_SUPPORTED_VERSION = '0.0.1';
+const MAX_SUPPORTED_VERSION = '0.2.1';
 
 enum EnumTheme {
   light = 'light',
@@ -411,7 +415,21 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     const { filteredIds } = this.state;
     const { type, version, contest, problems, series, _now, markers } = data;
     if (type !== 'general') {
-      return <div>Ranklist type "{type}" is not supported</div>;
+      return <div>srk type "{type}" is not supported</div>;
+    }
+    if (
+      !(
+        semver.valid(version) &&
+        semver.gte(version, MIN_SUPPORTED_VERSION) &&
+        semver.lte(version, MAX_SUPPORTED_VERSION)
+      )
+    ) {
+      return (
+        <div>
+          srk version "{version}" is not supported ({MIN_SUPPORTED_VERSION} to{' '}
+          {MAX_SUPPORTED_VERSION})
+        </div>
+      );
     }
     return (
       <div className="table ranklist">
