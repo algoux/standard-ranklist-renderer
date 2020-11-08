@@ -5,16 +5,15 @@ export interface ScrollSolutionProps {
   enabled: boolean;
   dataUrl?: string;
   interval?: number;
+  switchContent?: React.ReactNode | string;
 }
 
-interface State {
-
-}
+interface State {}
 
 export default class ScrollSolution extends React.Component<ScrollSolutionProps, State> {
-  constructor(props: ScrollSolutionProps) {
-    super(props);
-  }
+  static defaultProps: Partial<ScrollSolutionProps> = {
+    switchContent: 'Realtime Solutions',
+  };
 
   onCheckEnable = (e: any) => {
     if (!this.props.enabled) {
@@ -22,18 +21,22 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
     } else {
       window.location.href = `${window.location.origin}${window.location.pathname}`;
     }
-  }
+  };
 
   render() {
-    const { enabled, dataUrl, interval } = this.props;
+    const { enabled, dataUrl, interval, switchContent } = this.props;
     const act = (
       <div className="plugin_scroll-solution-act -cursor-pointer" onClick={this.onCheckEnable}>
-        <input type="checkbox" defaultChecked={enabled} /> 实时提交 <sup>Beta</sup>
+        <input type="checkbox" defaultChecked={enabled} /> {switchContent}
       </div>
     );
-    return <div>
-      {enabled && dataUrl && interval ? <ScrollSolutionImpl dataUrl={dataUrl} interval={interval} /> : null}
-      {act}
-    </div>;
+    return (
+      <div>
+        {enabled && dataUrl && interval ? (
+          <ScrollSolutionImpl dataUrl={dataUrl} interval={interval} />
+        ) : null}
+        {act}
+      </div>
+    );
   }
 }

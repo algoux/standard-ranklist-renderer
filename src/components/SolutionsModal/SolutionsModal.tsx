@@ -32,7 +32,7 @@ export default class SolutionsModal extends React.Component<SolutionsModalProps,
     this.setState({
       visible: false,
     });
-  }
+  };
 
   render() {
     const { style, wrapClassName } = this.props;

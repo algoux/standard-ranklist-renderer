@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM, { unmountComponentAtNode } from 'react-dom'
+import React from 'react';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import SolutionsModal, { SolutionsModalProps } from './SolutionsModal';
 
 export interface SolutionsModalOptions {
@@ -23,18 +23,19 @@ export default class SolutionsModalSingleton {
       this.dom.id = 'solution-modal';
       document.body.appendChild(this.dom);
     }
-    ReactDOM.render(<SolutionsModal {...options} ref={ref => this.ref = ref} />, this.dom);
+    ReactDOM.render(<SolutionsModal {...options} ref={(ref) => (this.ref = ref)} />, this.dom);
   }
 
   modal(options: SolutionsModalOptions, e?: React.MouseEvent) {
-    this.ref && this.ref.setState({
-      ...options,
-      mousePosition: e && {
-        x: e.pageX,
-        y: e.pageY,
-      },
-      visible: true,
-    });
+    this.ref &&
+      this.ref.setState({
+        ...options,
+        mousePosition: e && {
+          x: e.pageX,
+          y: e.pageY,
+        },
+        visible: true,
+      });
   }
 
   destroy() {
@@ -52,7 +53,7 @@ export default class SolutionsModalSingleton {
         });
       }
       return instance;
-    }
+    };
   })();
 }
 

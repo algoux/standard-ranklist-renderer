@@ -3,7 +3,7 @@ import Dropdown from 'rc-dropdown';
 import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 import 'rc-dropdown/assets/index.css';
 import { SelectInfo } from 'rc-menu/lib/interface';
-import './SelectDropdown.less'
+import './SelectDropdown.less';
 
 export interface SelectDropdownProps {
   options: {
@@ -36,9 +36,9 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
       visible,
     });
     if (!visible && onConfirm) {
-      onConfirm(this.selected)
+      onConfirm(this.selected);
     }
-  }
+  };
 
   saveSelected = ({ selectedKeys }: SelectInfo) => {
     const { onChange } = this.props;
@@ -47,7 +47,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
     if (onChange) {
       onChange(this.selected);
     }
-  }
+  };
 
   confirm = () => {
     const { onConfirm } = this.props;
@@ -57,7 +57,7 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
     if (onConfirm) {
       onConfirm(this.selected);
     }
-  }
+  };
 
   getOptions = () => {
     const { options } = this.props;
@@ -65,8 +65,8 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
     if (!search) {
       return options;
     }
-    return options.filter(item => item.name.indexOf(search) >= 0);
-  }
+    return options.filter((item) => item.name.indexOf(search) >= 0);
+  };
 
   render() {
     const { children } = this.props;
@@ -76,29 +76,23 @@ export default class SelectDropdown extends React.Component<SelectDropdownProps,
         multiple
         onSelect={this.saveSelected}
         onDeselect={this.saveSelected}
-        style={{ maxHeight: '400px', overflow: "auto" }}
+        style={{ maxHeight: '400px', overflow: 'auto' }}
         className="select-dropdown-menu"
       >
         <li className="rc-dropdown-menu-item select-dropdown-menu-item-input">
           <input
             value={search}
-            onChange={e => this.setState({ search: e.target.value })}
+            onChange={(e) => this.setState({ search: e.target.value })}
             placeholder="Search options..."
             style={{ width: 'calc(100% - 4px)', padding: '0' }}
           />
         </li>
-        {this.getOptions().map(item => <MenuItem key={item.value} style={{ paddingRight: '36px' }}>{item.name}</MenuItem>)}
+        {this.getOptions().map((item) => (
+          <MenuItem key={item.value} style={{ paddingRight: '36px' }}>
+            {item.name}
+          </MenuItem>
+        ))}
         <Divider />
-        {/* <MenuItem disabled>
-          <button
-            style={{
-              cursor: 'pointer',
-              pointerEvents: 'visible',
-            }}
-            onClick={this.confirm}
-          >OK
-          </button>
-        </MenuItem> */}
       </Menu>
     );
 

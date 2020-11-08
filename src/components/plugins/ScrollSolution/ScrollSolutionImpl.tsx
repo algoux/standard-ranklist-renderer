@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './ScrollSolution.less';
+import './index.less';
 import * as srk from '../../../srk';
 import request from '../../../utils/request';
 
@@ -24,9 +24,7 @@ export interface ScrollSolutionImplProps {
   interval: number;
 }
 
-interface State {
-
-}
+interface State {}
 
 const RJ_DELAY = 10 * 1000;
 const DELAY_MAP = {
@@ -53,10 +51,6 @@ export default class ScrollSolutionImpl extends React.Component<ScrollSolutionIm
   _popInterval: number = POP_INTERVAL;
   _timer: number = 0;
 
-  constructor(props: ScrollSolutionImplProps) {
-    super(props);
-  }
-
   componentDidMount() {
     this.popFromQueue();
     this.requestData();
@@ -69,17 +63,22 @@ export default class ScrollSolutionImpl extends React.Component<ScrollSolutionIm
   }
 
   pop(data: ScrollSolutionDataItem, delay: number) {
-    toast(<div className="container">
-      <div className="score">{data.score.value}</div>
-      <div className="user">
-        <span className="user-name">{data.user.name}</span>
-        {data.user.organization && <span className="user-second-name">{data.user.organization}</span>}
-      </div>
-      <div className="problem">{data.problem.alias}</div>
-      {this.renderResultLabel(data.result)}
-    </div>, {
-      autoClose: delay,
-    });
+    toast(
+      <div className="container">
+        <div className="score">{data.score.value}</div>
+        <div className="user">
+          <span className="user-name">{data.user.name}</span>
+          {data.user.organization && (
+            <span className="user-second-name">{data.user.organization}</span>
+          )}
+        </div>
+        <div className="problem">{data.problem.alias}</div>
+        {this.renderResultLabel(data.result)}
+      </div>,
+      {
+        autoClose: delay,
+      },
+    );
   }
 
   handleSolutions(rows: ScrollSolutionDataItem[]) {
@@ -128,39 +127,19 @@ export default class ScrollSolutionImpl extends React.Component<ScrollSolutionIm
         this._updatedAt = data.updatedAt;
         this.handleSolutions(data.rows);
       }
-      // // test
-      // const add = Math.floor(Math.random() * 10);
-      // const rows = new Array(add).fill(undefined).map(x => {
-      //   const res = Math.floor(Math.random() * 100);
-      //   return {
-      //     "problem": {
-      //       "alias": "B"
-      //     },
-      //     "score": {
-      //       "value": 10
-      //     },
-      //     "result": res === 0 ? "FB" : res < 10 ? "AC" : "RJ",
-      //     "user": {
-      //       "id": "T248",
-      //       "name": "没有人比我更懂ACM",
-      //       "organization": "哈尔滨工业大学（深圳）",
-      //       "marker": "female"
-      //     }
-      //   }
-      // });
-      // // @ts-ignore
-      // this.handleSolutions(rows);
     } catch (e) {
       console.error('requestData scroll solution err:', e);
     }
-  }
+  };
 
   renderResultLabel(result: ScrollSolutionDataItem['result']) {
     switch (result) {
       case 'FB':
-        return <div className="result result-fb">
-          <span>{result}</span>
-        </div>;
+        return (
+          <div className="result result-fb">
+            <span>{result}</span>
+          </div>
+        );
       case 'AC':
         return <div className="result result-ac">{result}</div>;
       case 'RJ':
