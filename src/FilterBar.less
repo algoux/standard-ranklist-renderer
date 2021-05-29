@@ -1,16 +1,27 @@
 .filterbar {
+  --button-bg: #fff;
+  --button-hover-bg: #e2e2e2;
+  --button-border: #b9b9b9;
+
+  @media screen and (prefers-color-scheme: dark) {
+    --button-bg: #3d3d3d;
+    --button-hover-bg: #575757;
+    --button-border: transparent;
+  }
+
   display: flex;
 
   .filterbar-button {
-    border: 1px solid #b9b9b9;
+    color: var(--body-text);
+    border: 1px solid var(--button-border);
     border-radius: 4px;
-    background: white;
+    background: var(--button-bg);
     outline: none;
     font-size: 14px;
-    padding: 4px 8px
-  }
+    padding: 4px 8px;
 
-  .filterbar-button:hover {
-    background-color: #e2e2e2;
+    &:hover {
+      background-color: var(--button-hover-bg);
+    }
   }
 }

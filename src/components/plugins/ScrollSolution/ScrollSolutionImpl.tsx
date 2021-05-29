@@ -153,7 +153,7 @@ export default class ScrollSolutionImpl extends React.Component<ScrollSolutionIm
       case 'UKE':
         return <div className="result result-rj">{result}</div>;
       case '?':
-        return <div className="result">?</div>;
+        return <div className="result result-fz">?</div>;
       default:
         return <div className="result">--</div>;
     }

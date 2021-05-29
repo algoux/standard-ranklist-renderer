@@ -230,7 +230,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     );
     const cellComp = p.link ? this.genExternalLink(p.link, innerComp) : innerComp;
     const bgColor = Color(backgroundColor[theme] || defaultBackgroundColor[theme])
-      .alpha(0.7)
+      .alpha(0.75)
       .string();
     return (
       <th key={p.alias || p.title} className="-nowrap" style={{ backgroundColor: bgColor }}>

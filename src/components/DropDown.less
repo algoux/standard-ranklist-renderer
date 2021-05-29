@@ -10,6 +10,14 @@
 }
 
 .dropdown-menu {
+  --menu-bg: #fff;
+  --menu-item-hover: #c0f0ff;
+
+  @media screen and (prefers-color-scheme: dark) {
+    --menu-bg: #131313;
+    --menu-item-hover: #3c3c3c;
+  }
+
   position: absolute;
   z-index: 1;
   min-width: 60px;
@@ -18,7 +26,7 @@
   font-size: 14px;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--menu-bg);
   border: 1px solid rgba(0, 0, 0, .15);
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
@@ -30,6 +38,6 @@
 
   &:hover {
     cursor: pointer;
-    background-color: #c0f0ff;
+    background-color: var(--menu-item-hover);
   }
 }
