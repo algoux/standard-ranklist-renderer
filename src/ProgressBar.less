@@ -1,6 +1,7 @@
 .progress-bar {
   .progress-bar-container {
-    border-radius: 5px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
     overflow: hidden;
     height: 10px;
     margin: 0 auto;
@@ -12,6 +13,37 @@
       transition: all 1s linear;
       text-align: center;
       background-color: #6caf00;
+      color: #ffffff;
+    }
+
+    .progess-bar-fill-right {
+      border-radius: 5px;
+      height: 100%;
+      transition: all 1s linear;
+      text-align: center;
+      background-color: blue;
+      color: #ffffff;
+    }
+  }
+
+  .progress-bar-container-right {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    overflow: hidden;
+    height: 10px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    .progess-bar-fill-right {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+      // border-radius: 5px;
+      height: 100%;
+      transition: all 1s linear;
+      text-align: center;
+      background-color: blue;
       color: #ffffff;
     }
   }

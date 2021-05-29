@@ -44,7 +44,7 @@ export default class FilterBar extends React.Component<FilterBarProps, State> {
     userOrganizationSelectPlaceholder: 'Select Organizations',
   };
 
-  private _filteredIds: string[] = [];
+  private _filteredIds: string[] | null = null;
 
   constructor(props: FilterBarProps) {
     super(props);
@@ -152,7 +152,8 @@ export default class FilterBar extends React.Component<FilterBarProps, State> {
     }
     if (filteredIdsChanged || force) {
       if (onConfirm) {
-        onConfirm(this._filteredIds);
+        if (this._filteredIds)
+          onConfirm(this._filteredIds);
       }
     }
   };

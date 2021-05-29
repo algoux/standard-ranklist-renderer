@@ -33,6 +33,8 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
   }
 
   componentDidMount(): void {
+    console.log("*********");
+
     const { _now, startAt, duration } = this.props;
     if (_now) {
       const durationMs = this.props.getTimeDurationMs(duration);
@@ -42,7 +44,7 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
       let remainingTime = moment
         .duration(
           moment(moment(startAt).add(durationMs, 'ms').format('YYYY-MM-DD HH:mm:ss')).valueOf() -
-            moment(_now).valueOf(),
+          moment(_now).valueOf(),
         )
         .as('seconds');
 
@@ -68,16 +70,20 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
   }
 
   render() {
+    console.log(this.state.width);
+
     const { _now } = this.props;
     return (
       <div className="progress-bar">
         {_now ? (
           <div>
-            <div className="progress-bar-container">
-              <div
-                className="progess-bar-fill"
-                style={{ width: this.state.width * 100 + '%' }}
-              ></div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className="progress-bar-container" style={{ width: '80%' }}>
+                <div className="progess-bar-fill" style={{ width: this.state.width <= 80 ? this.state.width * 1.25 + '%' : '110%' }}></div>
+              </div>
+              <div className="progress-bar-container-right" style={{ width: '20%' }}>
+                <div className="progess-bar-fill-right" style={{ width: this.state.width > 80 ? (this.state.width - 80) * 5 + '%' : '0%' }}></div>
+              </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>Elapsed: {secToTimeStr(this.state.elapsed)}</div>
