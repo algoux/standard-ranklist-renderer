@@ -1,0 +1,6 @@
+{
+  "srkRefreshInterval": 15000,
+  "srkUrl": "data/some-contest.srk.json",
+  "scrollSolutionRefreshInterval": 2000,
+  "scrollSolutionUrl": "data_plugin/scroll-solution/some-contest.json"
+}

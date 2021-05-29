@@ -1,0 +1,145 @@
+{
+  "updatedAt": 1604682908,
+  "rows": [
+    {
+      "problem": {
+        "alias": "K"
+      },
+      "score": {
+        "value": 2
+      },
+      "result": "RJ",
+      "user": {
+        "id": "T110",
+        "name": "三个打铁匠",
+        "organization": "湖南理工学院"
+      }
+    },
+    {
+      "problem": {
+        "alias": "G"
+      },
+      "score": {
+        "value": 2
+      },
+      "result": "RJ",
+      "user": {
+        "id": "T262",
+        "name": "MedalOrSingleDog",
+        "organization": "新疆大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "K"
+      },
+      "score": {
+        "value": 2
+      },
+      "result": "AC",
+      "user": {
+        "id": "T068",
+        "name": "MedalOrSingleDog",
+        "organization": "广西师范大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "E"
+      },
+      "score": {
+        "value": 7
+      },
+      "result": "AC",
+      "user": {
+        "id": "T026",
+        "name": "零叉八C",
+        "organization": "北京邮电大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "G"
+      },
+      "score": {
+        "value": 5
+      },
+      "result": "WA",
+      "user": {
+        "id": "T344",
+        "name": "Eureka",
+        "organization": "福州大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "G"
+      },
+      "score": {
+        "value": 4
+      },
+      "result": "RJ",
+      "user": {
+        "id": "T025",
+        "name": "康康康康",
+        "organization": "北京邮电大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "K"
+      },
+      "score": {
+        "value": 2
+      },
+      "result": "TLE",
+      "user": {
+        "id": "T271",
+        "name": "我真是长理9队",
+        "organization": "长春理工大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "G"
+      },
+      "score": {
+        "value": 6
+      },
+      "result": "AC",
+      "user": {
+        "id": "T211",
+        "name": "正道的光",
+        "organization": "上海交通大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "J"
+      },
+      "score": {
+        "value": 2
+      },
+      "result": "RJ",
+      "user": {
+        "id": "T145",
+        "name": "听风",
+        "organization": "闽南师范大学"
+      }
+    },
+    {
+      "problem": {
+        "alias": "J"
+      },
+      "score": {
+        "value": 4
+      },
+      "result": "RJ",
+      "user": {
+        "id": "T014",
+        "name": "阿咆变节biu",
+        "organization": "北京理工大学"
+      }
+    }
+  ]
+}

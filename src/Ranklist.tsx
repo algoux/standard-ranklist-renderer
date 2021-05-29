@@ -34,6 +34,7 @@ interface State {
   theme: keyof typeof EnumTheme;
   marker: string;
   filteredIds?: srk.User['id'][];
+  error: string | null;
 }
 
 const { Ranklist: ranklistChecker } = createCheckers(srkChecker);
@@ -50,7 +51,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       theme: EnumTheme.light,
       marker: 'all',
       filteredIds: undefined,
-      // rows_select: []
+      error: null,
     };
   }
 
@@ -89,8 +90,14 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     try {
       // console.log('preCheckData', JSON.stringify(data));
       ranklistChecker.check(data);
+      this.setState({
+        error: null,
+      });
     } catch (e) {
-      throw new Error('Ranklist Data Check ' + e.toString());
+      this.setState({
+        error: 'Ranklist Data Check ' + e.toString(),
+      });
+      // throw new Error('Ranklist Data Check ' + e.toString());
     }
   }
 
@@ -335,7 +342,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       data: { problems },
     } = this.props;
     const result = st.result;
-    let commonClassName = '-text-center -nowrap -cursor-pointer';
+    let commonClassName = '-text-center -nowrap';
     const problem = problems[problemIndex] || {};
     const key = problem.alias || problem.title || problemIndex;
     const solutions = [...(st.solutions || [])].reverse();
@@ -410,9 +417,19 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   render() {
     // console.log('ranklist render')
+    const { filteredIds, error } = this.state;
+    if (error) {
+      return (
+        <div>
+          <div className="error">
+            <pre>Error: {error}</pre>
+            <p>Please wait for data correction or refresh page</p>
+          </div>
+        </div>
+      );
+    }
     const { data } = this.props;
     const rows = data.rows;
-    const { filteredIds } = this.state;
     const { type, version, contest, problems, series, _now, markers } = data;
     if (type !== 'general') {
       return <div>srk type "{type}" is not supported</div>;

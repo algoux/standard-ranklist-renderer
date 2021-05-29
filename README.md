@@ -38,13 +38,23 @@ Open url in your browser: `http://localhost:3000`
 
 Environment: Node.js
 
-Modify some configs in `src/App.tsx`, then run:
+Steps:
 
-```
-npm run build
-```
+1. (Optional) Modify production config url in `src/App.tsx`
+2. Run: `npm run build`
 
 It will output to `build/`.
+
+You can place your production config json in build dir (by default) or another dir.
+
+Production config fields:
+
+```
+srkRefreshInterval: number; // srk refresh intervel (ms)
+srkUrl: string; // srk fetch url
+scrollSolutionRefreshInterval?: number; // scroll solution plugin refresh interval (ms)
+scrollSolutionUrl?: string; // scroll solution data fetch url
+```
 
 See the section about [CRA's deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 

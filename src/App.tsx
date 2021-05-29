@@ -1,18 +1,13 @@
 import React from 'react';
 import './App.less';
 import Ranklist from './Ranklist';
-import demoJson from './demo.json';
+import demoJson from './demo/srk.json';
 import request from './utils/request';
 import ScrollSolution from './components/plugins/ScrollSolution';
 import classnames from 'classnames';
 
 /** Deploy config ↓ */
-// srk
-const srkRefreshInterval = 15 * 1000;
-const srkUrl = 'data/your-ranklist.srk.json';
-// scroll solution plugin (if not needed, set `scrollSolutionUrl` as empty string)
-const scrollSolutionRefreshInterval = 2 * 1000;
-const scrollSolutionUrl = 'data_plugin/scroll-solution/your-ranklist.json';
+const prodConfigUrl = 'config.json';
 /** Deploy config ↑ */
 
 let isDev = process.env.NODE_ENV === 'development';
@@ -23,8 +18,12 @@ interface State {
   data: any;
   loading: boolean;
   id: string;
-  srkUrl: string;
-  scrollSolutionUrl?: string;
+  config: {
+    srkRefreshInterval: number;
+    srkUrl: string;
+    scrollSolutionRefreshInterval?: number;
+    scrollSolutionUrl?: string;
+  };
 }
 
 class App extends React.Component<any, State> {
@@ -36,15 +35,38 @@ class App extends React.Component<any, State> {
       data: null,
       loading: false,
       id: '',
-      srkUrl,
-      scrollSolutionUrl,
+      config: {
+        srkRefreshInterval: -1,
+        srkUrl: '',
+      },
     };
   }
 
   componentDidMount(): void {
     if (!isDev) {
-      this.requestData();
-      setInterval(() => this.requestData(), srkRefreshInterval);
+      request(prodConfigUrl, {
+        method: 'GET',
+        timeout: 30 * 1000,
+      })
+        .then((config) => {
+          const { srkRefreshInterval, srkUrl, scrollSolutionRefreshInterval, scrollSolutionUrl } =
+            config;
+          // console.log(config);
+          this.setState({
+            config: {
+              srkRefreshInterval,
+              srkUrl,
+              scrollSolutionRefreshInterval,
+              scrollSolutionUrl,
+            },
+          });
+          this.requestData();
+          setInterval(() => this.requestData(), srkRefreshInterval);
+        })
+        .catch((e) => {
+          console.error(e);
+          alert('Ranklist config not found, please refresh page');
+        });
     } else {
       this.setState({
         data: demoJson,
@@ -64,9 +86,9 @@ class App extends React.Component<any, State> {
       this.setState({
         loading: true,
       });
-      const data = await request(this.state.srkUrl, {
+      const data = await request(this.state.config.srkUrl, {
         method: 'GET',
-        timeout: 30 * 1000,
+        timeout: this.state.config.srkRefreshInterval,
       });
       // console.log('requestData', typeof data, data, JSON.stringify(data));
       this.setState({
@@ -83,14 +105,17 @@ class App extends React.Component<any, State> {
 
   render() {
     const data = this.state.data;
-    const { srkUrl, scrollSolutionUrl } = this.state;
+    const { config } = this.state;
     if (this.state.error) {
       return (
-        <div className="error">
+        <div>
           <pre>Error: {this.state.error.message}</pre>
         </div>
       );
     } else if (data) {
+      const showScrollSolution = !!(
+        config.scrollSolutionUrl && config.scrollSolutionRefreshInterval
+      );
       const enableScrollSolution = window.location.search.indexOf('scrollSolution=1') >= 0;
       return (
         <div className={classnames({ 'plugin_root_scroll-solution': enableScrollSolution })}>
@@ -101,7 +126,7 @@ class App extends React.Component<any, State> {
               View Contests Collection
             </a>
             <br />
-            Copyright © 2019-2020{' '}
+            Copyright © 2019-2021{' '}
             <a href="https://github.com/algoux" target="_blank" rel="noopener noreferrer">
               algoUX
             </a>
@@ -115,15 +140,17 @@ class App extends React.Component<any, State> {
               Standard Ranklist
             </a>{' '}
             renderer.{' '}
-            <a href={srkUrl} target="_blank" rel="noopener noreferrer">
+            <a href={config.srkUrl} target="_blank" rel="noopener noreferrer">
               Open srk.json
             </a>
           </div>
-          <ScrollSolution
-            enabled={enableScrollSolution}
-            dataUrl={scrollSolutionUrl}
-            interval={scrollSolutionRefreshInterval}
-          />
+          {showScrollSolution && (
+            <ScrollSolution
+              enabled={enableScrollSolution}
+              dataUrl={config.scrollSolutionUrl}
+              interval={config.scrollSolutionRefreshInterval}
+            />
+          )}
         </div>
       );
     } else if (!data && !this.state.loading) {
