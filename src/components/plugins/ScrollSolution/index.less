@@ -1,4 +1,20 @@
 .plugin_scroll-solution-container {
+  --bg: #fff;
+  --text: #333;
+  --color-user-second-name: #828282;
+  --color-ac-bg: #4fb24f;
+  --color-rj-bg: #e23a36;
+  --color-result-text: #fff;
+
+  @media screen and (prefers-color-scheme: dark) {
+    --bg: #272727;
+    --text: rgb(223, 223, 233);
+    --color-user-second-name: #a5a5a5;
+    --color-ac-bg: #1f841f;
+    --color-rj-bg: #a02a27;
+    --color-result-text: var(--text);
+  }
+
   @scroll-solution-width: 250px;
   width: @scroll-solution-width;
 
@@ -20,8 +36,9 @@
     // border: 1px solid #eee;
     padding: 0;
     min-height: initial;
-    font-family: "Helvetica Neue", Helvetica, "Microsoft Yahei", Arial, sans-serif;
-    color: #333;
+    font-family: 'Helvetica Neue', Helvetica, 'Microsoft Yahei', Arial, sans-serif;
+    color: var(--text);
+    background-color: var(--bg);
     // height: 32px;
 
     .container {
@@ -56,7 +73,7 @@
         }
 
         .user-second-name {
-          color: #828282;
+          color: var(--color-user-second-name);
           font-size: 11px;
         }
       }
@@ -94,15 +111,15 @@
           }
 
           25% {
-            opacity: .9;
+            opacity: 0.9;
           }
 
           50% {
-            opacity: .3;
+            opacity: 0.3;
           }
 
           75% {
-            opacity: .9;
+            opacity: 0.9;
           }
 
           100% {
@@ -123,13 +140,13 @@
         }
 
         &.result-ac {
-          background-color: #4fb24f;
-          color: #fff;
+          background-color: var(--color-ac-bg);
+          color: var(--color-result-text);
         }
 
         &.result-rj {
-          background-color: #e23a36;
-          color: #fff;
+          background-color: var(--color-rj-bg);
+          color: var(--color-result-text);
         }
       }
     }
@@ -137,12 +154,18 @@
 }
 
 .plugin_scroll-solution-act {
+  --bg: rgba(255, 255, 255, 0.75);
+
+  @media screen and (prefers-color-scheme: dark) {
+    --bg: rgba(25, 25, 25, 0.75);
+  }
+
   position: fixed;
   bottom: 15px;
   right: 15px;
   font-size: 14px;
   padding: 12px;
-  background-color: rgba(255, 255, 255, .7);
+  background-color: var(--bg);
   backdrop-filter: saturate(180%) blur(20px);
   border-radius: 4px;
 }
