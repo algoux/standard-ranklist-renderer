@@ -35,22 +35,19 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
   componentDidMount(): void {
     const { _now, startAt, duration } = this.props;
     if (_now) {
+      const durationMs = this.props.getTimeDurationMs(duration);
       let elapsedTime = moment
         .duration(moment(_now).valueOf() - moment(startAt).valueOf())
         .as('seconds');
       let remainingTime = moment
         .duration(
-          moment(
-            moment(startAt)
-              .add(this.props.getTimeDurationMs(duration), 'ms')
-              .format('YYYY-MM-DD HH:mm:ss'),
-          ).valueOf() - moment(_now).valueOf(),
+          moment(moment(startAt).add(durationMs, 'ms').format('YYYY-MM-DD HH:mm:ss')).valueOf() -
+            moment(_now).valueOf(),
         )
         .as('seconds');
 
-      this._time = 100 / (duration[0] * 3600);
       this.setState({
-        width: elapsedTime * this._time,
+        width: (elapsedTime * 1000) / durationMs,
         elapsed: remainingTime <= 0 ? 0 : elapsedTime,
         remaining: remainingTime,
       });
@@ -58,12 +55,10 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
         if (remainingTime <= 0) {
           clearInterval(timer);
         } else {
-          let count = this.state.width;
-          count += this._time;
           elapsedTime++;
           remainingTime--;
           this.setState({
-            width: count,
+            width: (elapsedTime * 1000) / durationMs,
             elapsed: elapsedTime,
             remaining: remainingTime,
           });
@@ -79,7 +74,10 @@ export default class ProgressBar extends React.Component<ProgressBarProps, State
         {_now ? (
           <div>
             <div className="progress-bar-container">
-              <div className="progess-bar-fill" style={{ width: this.state.width + '%' }}></div>
+              <div
+                className="progess-bar-fill"
+                style={{ width: this.state.width * 100 + '%' }}
+              ></div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>Elapsed: {secToTimeStr(this.state.elapsed)}</div>
