@@ -12,6 +12,8 @@ import semver from 'semver';
 import { solutionsModal } from './components/SolutionsModal';
 import ProgressBar from './ProgressBar';
 import FilterBar from './FilterBar';
+// @ts-ignore
+import TEXTColor from 'textcolor';
 
 const MIN_SUPPORTED_VERSION = '0.0.1';
 const MAX_SUPPORTED_VERSION = '0.2.1';
@@ -159,7 +161,20 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   resolveStyle(style: srk.Style) {
     const { textColor, backgroundColor } = style;
-    const textThemeColor = this.resolveThemeColor(textColor || '');
+    let usingTextColor: typeof textColor = textColor;
+    // 未指定前景色时，尝试自动适配
+    if (backgroundColor && !textColor) {
+      if (typeof backgroundColor === 'string') {
+        usingTextColor = TEXTColor.findTextColor(backgroundColor);
+      } else {
+        const { light, dark } = backgroundColor;
+        usingTextColor = {
+          light: light && TEXTColor.findTextColor(light),
+          dark: dark && TEXTColor.findTextColor(dark),
+        };
+      }
+    }
+    const textThemeColor = this.resolveThemeColor(usingTextColor || '');
     const backgroundThemeColor = this.resolveThemeColor(backgroundColor || '');
     return {
       textColor: textThemeColor,
