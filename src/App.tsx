@@ -61,7 +61,7 @@ class App extends React.Component<any, State> {
             },
           });
           this.requestData();
-          setInterval(() => this.requestData(), srkRefreshInterval);
+          srkRefreshInterval > 0 && setInterval(() => this.requestData(), srkRefreshInterval);
         })
         .catch((e) => {
           console.error(e);
@@ -114,7 +114,7 @@ class App extends React.Component<any, State> {
       );
     } else if (data) {
       const showScrollSolution = !!(
-        config.scrollSolutionUrl && config.scrollSolutionRefreshInterval
+        config.scrollSolutionUrl && config.scrollSolutionRefreshInterval > 0
       );
       const enableScrollSolution = window.location.search.indexOf('scrollSolution=1') >= 0;
       return (
