@@ -114,7 +114,7 @@ class App extends React.Component<any, State> {
       );
     } else if (data) {
       const showScrollSolution = !!(
-        config.scrollSolutionUrl && config.scrollSolutionRefreshInterval > 0
+        config.scrollSolutionUrl && Number(config.scrollSolutionRefreshInterval) > 0
       );
       const enableScrollSolution = window.location.search.indexOf('scrollSolution=1') >= 0;
       return (
