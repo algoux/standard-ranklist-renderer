@@ -58,7 +58,7 @@ class App extends React.Component<any, State> {
         timeout: 30 * 1000,
       })
         .then((config) => {
-          const { srkRefreshInterval, srkUrl, scrollSolutionRefreshInterval, scrollSolutionUrl } =
+          const { srkRefreshInterval, srkUrl, scrollSolutionRefreshInterval, scrollSolutionUrl, usingFilters } =
             config;
           // console.log(config);
           this.setState({
@@ -67,6 +67,7 @@ class App extends React.Component<any, State> {
               srkUrl,
               scrollSolutionRefreshInterval,
               scrollSolutionUrl,
+              usingFilters,
             },
           });
           this.requestData();
