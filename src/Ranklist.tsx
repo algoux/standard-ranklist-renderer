@@ -424,9 +424,9 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
     }
   };
 
-  selectList = (arr: string[] | undefined) => {
+  selectList = (ids: (string | number)[] | undefined) => {
     this.setState({
-      filteredIds: arr,
+      filteredIds: ids,
     });
   };
 

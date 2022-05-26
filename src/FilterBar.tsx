@@ -14,7 +14,7 @@ export interface FilterBarProps {
   markerSelectDefaultPlaceholder?: string;
   userNameSelectPlaceholder?: string;
   userOrganizationSelectPlaceholder?: string;
-  onConfirm?: (selected: string[] | undefined) => void;
+  onConfirm?: (selected: (string | number)[] | undefined) => void;
 }
 
 export interface SelectOptions {
@@ -44,7 +44,7 @@ export default class FilterBar extends React.Component<FilterBarProps, State> {
     userOrganizationSelectPlaceholder: 'Select Organizations',
   };
 
-  private _filteredIds: string[] = [];
+  private _filteredIds: (string | number)[] = [];
 
   constructor(props: FilterBarProps) {
     super(props);
@@ -126,26 +126,26 @@ export default class FilterBar extends React.Component<FilterBarProps, State> {
   onSearch = (force = false) => {
     const { data, onConfirm } = this.props;
     let marker = this.state.marker;
-    let markers: string[] = [];
+    let markers: (string | number)[] = [];
     if (marker !== '$all') {
       for (let i = 0; i < data.length; i++) {
         if (data[i].user.marker === marker) {
-          markers.push(String(data[i].user.id));
+          markers.push(data[i].user.id!);
         }
       }
     } else {
       for (let i = 0; i < data.length; i++) {
-        markers.push(String(data[i].user.id));
+        markers.push(data[i].user.id!);
       }
     }
     const schoolToIds = data
       .filter(
         (d) => d.user.organization && this.state.userOrganizationList.includes(d.user.organization),
       )
-      .map((d) => d.user.id as string);
+      .map((d) => d.user.id);
     const filteredIds = arrayIntersection(
       ...[markers, schoolToIds, this.state.userNameList].filter((f) => f.length),
-    );
+    ).filter(f => f !== undefined) as (string | number)[];
     const filteredIdsChanged = !isEqual(filteredIds, this._filteredIds);
     if (filteredIdsChanged) {
       this._filteredIds = filteredIds;
