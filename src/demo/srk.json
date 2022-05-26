@@ -58,10 +58,6 @@
     },
     {
       "alias": "B",
-      "style": {
-        "textColor": "#ffffff",
-        "backgroundColor": "#ff90e4"
-      },
       "statistics": {
         "accepted": 3,
         "submitted": 31

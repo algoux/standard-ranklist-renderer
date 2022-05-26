@@ -5,6 +5,7 @@ import demoJson from './demo/srk.json';
 import request from './utils/request';
 import ScrollSolution from './components/plugins/ScrollSolution';
 import classnames from 'classnames';
+import { parse } from 'query-string';
 
 /** Deploy config ↓ */
 const prodConfigUrl = 'config.json';
@@ -23,6 +24,7 @@ interface State {
     srkUrl: string;
     scrollSolutionRefreshInterval?: number;
     scrollSolutionUrl?: string;
+    usingFilters?: Array<'marker' | 'userName' | 'userOrganization'>;
   };
 }
 
@@ -44,7 +46,14 @@ class App extends React.Component<any, State> {
 
   componentDidMount(): void {
     if (!isDev) {
-      request(prodConfigUrl, {
+      let configUrl = '';
+      const configQuery = parse(window.location.search)?.config;
+      if (Array.isArray(configQuery)) {
+        configUrl = configQuery[0];
+      } else {
+        configUrl = configQuery || '';
+      }
+      request(configUrl || prodConfigUrl, {
         method: 'GET',
         timeout: 30 * 1000,
       })
@@ -119,14 +128,14 @@ class App extends React.Component<any, State> {
       const enableScrollSolution = window.location.search.indexOf('scrollSolution=1') >= 0;
       return (
         <div className={classnames({ 'plugin_root_scroll-solution': enableScrollSolution })}>
-          <Ranklist data={data} />
+          <Ranklist data={data} usingFilters={config.usingFilters} />
           <div className="-text-center" style={{ marginTop: '60px', marginBottom: '15px' }}>
             Powered by ACM team from SDUT.{' '}
             <a href="https://acm.sdut.edu.cn/acmss/" target="_blank" rel="noopener noreferrer">
               View Contests Collection
             </a>
             <br />
-            Copyright © 2019-2021{' '}
+            Copyright © 2019-2022{' '}
             <a href="https://github.com/algoux" target="_blank" rel="noopener noreferrer">
               algoUX
             </a>

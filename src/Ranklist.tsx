@@ -30,6 +30,7 @@ interface ThemeColor {
 
 export interface RanklistProps {
   data: srk.Ranklist;
+  usingFilters?: Array<'marker' | 'userName' | 'userOrganization'>;
 }
 
 interface State {
@@ -47,10 +48,12 @@ const defaultBackgroundColor = {
 };
 
 export default class Ranklist extends React.Component<RanklistProps, State> {
+  private _themeMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
   constructor(props: RanklistProps) {
     super(props);
     this.state = {
-      theme: EnumTheme.light,
+      theme: this._themeMedia.matches ? EnumTheme.dark : EnumTheme.light,
       marker: 'all',
       filteredIds: undefined,
       error: null,
@@ -59,6 +62,8 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
 
   componentDidMount(): void {
     this.preCheckData(this.props.data);
+    // @ts-ignore
+    this._themeMedia.addEventListener('change', this.listenThemeChange);
     // this.setState({
     //   rows: this.props.data.rows,
     //   // rows_select: this.props.data.rows
@@ -87,6 +92,22 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       // })
     }
   }
+  componentWillUnmount() {
+    // @ts-ignore
+    this._themeMedia.removeEventListener('change', this.listenThemeChange);
+  }
+
+  listenThemeChange = (mql: MediaQueryList) => {
+    if (mql.matches) {
+      this.setState({
+        theme: EnumTheme.dark,
+      });
+    } else {
+      this.setState({
+        theme: EnumTheme.light,
+      });
+    }
+  };
 
   preCheckData(data: any): void {
     try {
@@ -233,7 +254,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
       .alpha(0.75)
       .string();
     return (
-      <th key={p.alias || p.title} className="-nowrap" style={{ backgroundColor: bgColor }}>
+      <th key={p.alias || p.title} className="-nowrap problem" style={{ backgroundColor: bgColor }}>
         {cellComp}
       </th>
     );
@@ -443,7 +464,7 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
         </div>
       );
     }
-    const { data } = this.props;
+    const { data, usingFilters } = this.props;
     const rows = data.rows;
     const { type, version, contest, problems, series, _now, markers } = data;
     if (type !== 'general') {
@@ -494,7 +515,11 @@ export default class Ranklist extends React.Component<RanklistProps, State> {
           <div>
             <FilterBar
               data={data.rows}
-              filters={['marker', 'userOrganization', 'userName']}
+              filters={
+                Array.isArray(usingFilters)
+                  ? _.uniq(usingFilters)
+                  : ['marker', 'userOrganization', 'userName']
+              }
               markers={markers}
               onConfirm={this.selectList}
             />
