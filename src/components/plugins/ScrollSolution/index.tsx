@@ -1,5 +1,6 @@
 import React from 'react';
 import ScrollSolutionImpl from './ScrollSolutionImpl';
+import queryString from 'query-string';
 
 export interface ScrollSolutionProps {
   enabled: boolean;
@@ -16,10 +17,17 @@ export default class ScrollSolution extends React.Component<ScrollSolutionProps,
   };
 
   onCheckEnable = (e: any) => {
+    const query = queryString.parse(window.location.search);
     if (!this.props.enabled) {
-      window.location.search = '?scrollSolution=1';
+      window.location.search = queryString.stringify({
+        ...query,
+        scrollSolution: '1',
+      });
     } else {
-      window.location.href = `${window.location.origin}${window.location.pathname}`;
+      window.location.search = queryString.stringify({
+        ...query,
+        scrollSolution: undefined,
+      });
     }
   };
 
